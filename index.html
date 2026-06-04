@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>محاسبه قیمت لایت‌باکس فریم‌لس</title>
+<title>لایت‌باکس فریم‌لس | نامور</title>
 <style>
 :root{
   --bg:#0e1116;--panel:#161b22;--panel2:#1c2230;--line:#2a3240;
@@ -15,59 +15,49 @@
 body{margin:0;background:radial-gradient(ellipse 120% 60% at 80% -10%,#1a2331 0,var(--bg) 55%);
   color:var(--ink);font-family:"Vazirmatn","Segoe UI",Tahoma,sans-serif;line-height:1.6;
   min-height:100vh;padding:12px}
-
-/* ── HEADER ── */
 .site-header{max-width:1180px;margin:0 auto 14px;display:flex;align-items:center;
-  justify-content:space-between;gap:10px;flex-wrap:wrap}
-.brand{flex:1;min-width:180px}
-.brand h1{font-size:20px;margin:0 0 2px;text-align:center}
-.brand h1 span{color:var(--acc)}
-.brand p{color:var(--mut);font-size:11px;margin:0;text-align:center}
-/* login bar */
+  justify-content:space-between;gap:12px;flex-wrap:wrap;
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 20px}
+.brand{display:flex;align-items:center;gap:14px;flex-shrink:0}
+.brand img{height:46px;width:auto;display:block}
+.brand-text h1{font-size:15px;margin:0 0 1px;color:var(--ink);font-weight:700}
+.brand-text p{color:var(--mut);font-size:11px;margin:0}
 .login-bar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
 .login-bar input{background:var(--panel2);border:1px solid var(--line);color:var(--ink);
-  padding:7px 9px;border-radius:8px;font-size:13px;font-family:inherit;outline:none;
-  width:110px;min-width:0}
+  padding:7px 9px;border-radius:8px;font-size:13px;font-family:inherit;outline:none;width:110px;min-width:0}
 .login-bar input:focus{border-color:var(--acc2)}
 .lbtn{background:var(--panel2);border:1px solid var(--acc2);color:var(--acc2);
-  padding:7px 12px;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;
-  white-space:nowrap;transition:.15s}
+  padding:7px 12px;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;white-space:nowrap;transition:.15s}
 .lbtn:hover{background:var(--acc2);color:#0e1116}
 .admin-badge{background:rgba(255,176,0,.12);border:1px solid var(--acc);color:var(--acc);
-  padding:5px 12px;border-radius:20px;font-size:12px;display:none;cursor:pointer;white-space:nowrap}
-
-/* ── LAYOUT ── */
+  padding:5px 12px;border-radius:20px;font-size:12px;display:none;cursor:pointer;white-space:nowrap;align-items:center;gap:6px}
+.sync-dot{width:7px;height:7px;border-radius:50%;background:var(--mut);display:inline-block;flex-shrink:0}
+.sync-dot.ok{background:var(--ok)}.sync-dot.busy{background:var(--acc);animation:pulse .8s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:300px 1fr;gap:14px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
 .card h2{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--acc2);margin:0 0 12px}
 label{display:block;font-size:12px;color:var(--mut);margin:9px 0 3px}
 input[type=number],select{width:100%;background:var(--panel2);border:1px solid var(--line);
-  color:var(--ink);padding:9px 10px;border-radius:9px;font-size:14px;font-family:inherit;
-  outline:none;-webkit-appearance:none;appearance:none}
+  color:var(--ink);padding:9px 10px;border-radius:9px;font-size:14px;font-family:inherit;outline:none;-webkit-appearance:none;appearance:none}
 input[type=number]:focus,select:focus{border-color:var(--acc2)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .btn{width:100%;margin-top:14px;background:linear-gradient(135deg,var(--acc),#ff8c00);
   color:#1a1205;border:0;padding:13px;border-radius:10px;font-weight:700;font-size:15px;
   cursor:pointer;font-family:inherit;transition:.15s;touch-action:manipulation}
 .btn:active{filter:brightness(.93)}
-
-/* admin visibility */
+.btn-s{background:var(--panel2);border:1px solid var(--ok);color:var(--ok);
+  padding:9px 14px;border-radius:9px;font-size:13px;cursor:pointer;font-family:inherit;white-space:nowrap;transition:.15s;flex:1}
+.btn-s:hover{background:var(--ok);color:#0e1116}
+.btn-s.blue{border-color:var(--acc2);color:var(--acc2)}
+.btn-s.blue:hover{background:var(--acc2);color:#0e1116}
 .admin-section{display:none}
-details.admin-section{display:none!important}
 .admin-mode .admin-section{display:block!important}
-details summary{cursor:pointer;font-size:12px;color:var(--mut);list-style:none;padding:8px 0}
-details summary::-webkit-details-marker{display:none}
-details summary::before{content:"\2699  ";color:var(--acc)}
-.mini label{margin:5px 0 2px;font-size:11px}
-.mini input{padding:6px 8px;font-size:12px}
-
-/* results */
 .price-big{font-size:30px;font-weight:800;color:var(--acc);line-height:1.2}
 .price-big small{font-size:13px;color:var(--mut);font-weight:400}
 .hint{color:var(--mut);font-size:11px;margin-top:4px}
 .badges{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
-.badge{background:var(--panel2);border:1px solid var(--line);border-radius:20px;
-  padding:4px 10px;font-size:11px;white-space:nowrap}
+.badge{background:var(--panel2);border:1px solid var(--line);border-radius:20px;padding:4px 10px;font-size:11px;white-space:nowrap}
 .badge b{color:var(--ink)}
 table{width:100%;border-collapse:collapse;font-size:12px}
 th,td{text-align:right;padding:6px 4px;border-bottom:1px solid var(--line)}
@@ -76,60 +66,57 @@ td.num{font-variant-numeric:tabular-nums}
 tr.subtotal td{color:var(--mut);font-size:11px}
 tr.total td{border-top:2px solid var(--acc);border-bottom:0;font-weight:700;padding-top:9px}
 .total td:last-child{color:var(--acc)}
-.warnbox{background:rgba(255,122,89,.1);border:1px solid var(--warn);color:#ffb6a3;
-  border-radius:9px;padding:8px 11px;font-size:11px;margin-top:10px}
-
-/* schematic */
-.schem{background:#07090e;border:1px solid var(--line);border-radius:var(--radius);
-  padding:12px;margin-top:14px}
+.warnbox{background:rgba(255,122,89,.1);border:1px solid var(--warn);color:#ffb6a3;border-radius:9px;padding:8px 11px;font-size:11px;margin-top:10px}
+.schem{background:#07090e;border:1px solid var(--line);border-radius:var(--radius);padding:12px;margin-top:14px}
 .schem-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-svg.schema{display:block;width:100%;min-width:320px;height:auto}
-.schem-info{text-align:center;color:var(--led);font-size:11px;font-weight:700;
-  margin-top:8px;padding:0 4px;line-height:1.6;word-break:keep-all}
+svg.schema{display:block;width:100%;min-width:300px;height:auto}
+.schem-info{text-align:center;color:var(--led);font-size:11px;font-weight:700;margin-top:8px;padding:0 4px;line-height:1.8}
 .empty{color:var(--mut);text-align:center;padding:40px 0;font-size:13px}
 .card.admin-card{border-color:rgba(255,176,0,.25)}
-
-/* ── RESPONSIVE ── */
-@media(max-width:800px){
-  .wrap{grid-template-columns:1fr}
-  body{padding:10px}
-}
+.mini label{margin:5px 0 2px;font-size:11px}
+.mini input{padding:6px 8px;font-size:12px}
+.save-row{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap}
+#saveStatus{font-size:11px;color:var(--mut);min-width:80px}
+.jb-section{margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.jb-section>label{color:var(--acc2);font-size:11px;font-weight:600;margin-bottom:2px}
+.jb-section input{font-size:11px;padding:6px 8px;letter-spacing:.4px}
+@media(max-width:800px){.wrap{grid-template-columns:1fr}body{padding:8px}.site-header{padding:10px 14px}}
 @media(max-width:500px){
-  .site-header{flex-direction:column;align-items:stretch;gap:8px}
-  .brand h1{font-size:18px}
+  .site-header{flex-direction:column;align-items:stretch;gap:10px}
+  .brand img{height:38px}.brand-text h1{font-size:13px}
   .login-bar{justify-content:center}
-  .login-bar input{width:calc(50% - 3px);flex:1}
+  .login-bar input{flex:1;width:auto}
   .lbtn{flex:1;text-align:center}
   .price-big{font-size:26px}
-  .row2{grid-template-columns:1fr 1fr}
-  .badges{gap:5px}
-  .badge{font-size:10px;padding:3px 8px}
-  table{font-size:11px}
-  th,td{padding:5px 3px}
+  .badges{gap:4px}.badge{font-size:10px;padding:3px 8px}
+  table{font-size:11px}th,td{padding:5px 3px}
   .card{padding:12px}
 }
 </style>
 </head>
 <body>
 
-<!-- ══ HEADER ══ -->
 <div class="site-header">
   <div class="brand">
-    <h1>لایت‌باکس <span>فریم‌لس آلومینیومی</span></h1>
-    <p>محاسبه خودکار قیمت · چیدمان LED · نقشه شماتیک</p>
+    <img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAB7Aa0DASIAAhEBAxEB/8QAHQAAAQUBAQEBAAAAAAAAAAAAAAUGBwgJBAMCAf/EAFQQAAEDAwICBgQHCwkFBwUAAAECAwQFBhEABxIhCBMxQVFhCRQicRUWMkJygZEjNlJWYnN1gpKhsxcYNDiVorHB0jODlKPCJDdDY7TR0yVTVJPD/8QAHAEBAAEFAQEAAAAAAAAAAAAAAAUBAgMEBgcI/8QAOREAAQMCBAMFBwMDBAMAAAAAAQACAwQRBRIhMUFRYRMicYGxBgcUMpGh0UJywRUj8CRDUvFiwuH/2gAMAwEAAhEDEQA/AKZaNGjREa/UgqUEpBJJwAO/Tq2u2+ujci52qBa1PVJfOFPPLylmMjPNbivmp/eewAnlrQXYbo62XtiwxUH2G67coAK6jJbBDKvBhByED8rmo+ODjRFUPanoubm3w21Omw0WxSnMESKmkpdWnxQyPaP63CD3HVlbG6HW2NFQ25cT9UuaSB7YeeMZgnyQ2Qoe4rOrH6NETMoG1G2dBQkUqw7cjqSMBw09tbn7agVH7dOdql0xpvq2qdDbRjHClhIGPdjXZo0RNytWFY9abLdXs6356T/+RTmln6iU5B1GN4dFXZy4AtcehyqFIV/4tMlKQAfoL4kD6kjU46+XXG2m1OurS22gZUpRwAPEnRFRHcnoYXdSkOzLIrcW4GU8xEkgRpPuBJKFe8lHu1Wq5aBW7ZqztJuGkzKXPa+WxKZLa8eIB7Qe4jkda/QZkSdHEiFKYlMk4DjLgWkn3jlpv7jWDaW4NEVSLsoseoMYPVOKHC6wo/ObWPaQfceffkctEWR2jU0dJ3Ymds/VY0uNUUVK3qi6pEJ5xSUyEKAyW3Ed+B89Iwe8JJA1C+iI0aNGiI0aNe0CK/OnMQorfWSJDqWmkZA4lKOAMnkOZ79EXjo1Mn817fX8RVf2pD/+bUW3NQ6tbNfm0GuwXINSgulqQw5glCh5jII7CCCQQQQSDoiTdGjSpalAq903FCt+gxPXKnOc6uMx1iUcasE44lEJHIHtI0RJejUyfzXt9fxFV/akP/5tQ4tJSopUMEHB0RfmjRo0RGjUhbe7K7nX/QVV20rXcqNOS+pjrzLYZBWkAkAOLSTjiHMDHaO46NwdlNzrBoAr122u5TqaXksdeJjDwC1AkAhtaiAcHmRjsHeNEUe6NGjREaNGnXtvt3eW4tRlU+zaMqqSYjIefQJDTQQgnAOXFJHaewHOiJqaNSldPR83gti3ptfrdnORabBaLsl4T4znVoHaeFDhUQPIHUW6IjRo04LBsy5r8uFNAtOlrqVSU0p0MpdQ3hCflKKlqCQOY7T3jRE39GpcqfRr3sptNlVGZZK240VlbzyxUoiilCQVKOA6SeQPIAnUR6IjRqX4XRo3tmwmJsSyg9HkNpdacTVYeFoUMgj7t2EEaj6/LPuSxbidt666Yum1NpCHFMqcQ57KhlJCkEpI9x8R2jREg6NGjREaNPrbfaLcTcWnSqjZttrqkSK8GXnfWmWQleArh+6LTk4IPLOMjx10bg7K7mWBQRXbutsUynqeSwl1U+M5xOKBISEocUonCSezuOiKPdGjUk2PsVute1tx7jtm03J1LkqWlmQZsdoL4VFKsBxxKsAgjOO7RFG2jT73I2g3G26pkap3lba6ZDkvdQ0760y8FOcJVwnq1qwcAnnjsOmJoiNGjTs2225vPcadLg2ZRjVJENoOvoElpngQTgHLikg8/DRE09Gpk/mvb6/iKr+1If8A82uKodHLeyC2XH7AnrAGcMPsvH7ELJ0RRRo0o3BQ61b1QVTq9SJ9KmJGSxMjqZWB48KgDjz0naIjTt2lsCvbl3tDtegNZeePG++oHq4zII4nV+Qz2d5IA5nTUbQtxxLbaFLWshKUpGSSewAa016KG0jG1u3TImsI+MdVSmRVHSPabOMpYB8EA4PioqPZjRE8NoduLb2wtBi3rdjAAAKlSlgdbLdxzcWf8B2Achp46NGiI0EgDJOANGqt9OnehdrUQ7dW3KKKzVGOKovtq9qLGVy4Ae5bnP3Jz+EDoiZHSb6VNXVXZFrbXVFESDFUW5VYbSla5CxyKWSQQlA/DHNR7CBzVGu1XSe3LtS5I8ivV2ZclGW4BMhzVBayjPMtrPtJUB2DPCe8agzRoi2Kt6r0+v0KDW6VITJgT46JEd1PYtCwCD5cj2ao56Q28rkd3Hi2X63IjUGPT2pIjoUUokuLUrLivwscPCM9hBx2nUyej6uZ2tbJvUWS6Vu0OouR2wTkhlwBxP8AeU4PcBqQ98tlbO3chRU3AmTEqEMFMafDUEuoSeZQeIEKTnngjlzwRk5IqR9CW7q7b++lGo9PkPKp1aWuNOiBRKFjgUpLmOziSQDntxxDsJ1pKpQSkqUQEgZJJ5DUQbIdHixdqqmqtU1U2q1pSC2ibOUkllJ5KDaUgBORyJOTjIzgkaa/Tm3S+JO3HxWpUngrlxIUzlB9piJ2Or8irPAPeojmnRFU/paboq3O3UkvwXyug0nih0sA+ytIPtvfrqGc/ghA7tQ/o0t2Jbky7rvpluQAeunPhsqxkNo7VrPklIJ+rWOWVkLHSPNgBcnoFVrS4gDcpE0acW41pVGyLwnW5UvacjLy26BhLzZ5oWPIj7Dkd2m7qkM0c8bZYzdrhcHmCquaWOLXbhGlqxPv4oP6Sj/xU6RdLViffxQf0lH/AIqdZVatftVT6e20Pw7QBuZQYualS2giqttp5vxR2O+am+/8g/kjVrNfDzbMhhxl1CHWnElC0KAUlQPIgjvHdjRFjVqUOij/AFibL/SH/QrSh0rtpndrNx3WoLK/i7VSqTS3O0IGfbZJ8UEgeaSk9pOk/oo/1ibL/SH/AEK0Rakaxslf0p36Z/x1snrGyV/Snfpn/HRF5a9IrD0qS1GjtKdeeWG20JGSpROAAPEnXnqc+hFY/wAcN8YE2Szx0+30fCT5I5FxJAZT7+MhXuQdEV99mbOZsHa+gWm0E9ZBiJEhSexb6vadV9a1Kx5Y1+7xWezf22NftN4I458RSWFK7EPp9ppX1LSk6Vr1uCDalo1a5akrESmRHJLgzgqCEk8I8ycAeZGvKwblhXjZVHuinkerVOI3ISnOSgqHtIPmk5SfMHRFkRLjvRJTsWS0pp9lam3G1DBQoHBB8wRry1OvTfsf4ob4zp8Zngp9wI+EmSByDqjh5Pv4wVe5Y1BWiI1dn0alG6uiXjcKkZ6+THhNq8OrStah/wAxH2DVJtaP9A2jfBXR3p0oo4VVWdJmK8T7fVA/Y0NEU2V6mRK3Q59GqDfWQ58ZyM+j8JtaSlQ+wnWRV40KXbF2Va3J4xKpkx2K6cYyUKKcjyOMjyOtgtZ7+kEs/wCAd4mLkYa4Ytww0uqIGB6w1htwfs9Ufeo6Iq36ut6N6zuqplyX5JawqQ4mmQ1Ec+BOHHSPIktD3oOqVAEkADJPYNavbBWeLE2ftu2VthuTHhpcljHP1hz7o778KUR7gNET1lMNSorsZ9AW06goWk96SMEfZrHm4ac7R6/UaQ/nrYMp2MvP4SFlJ/eNbFay16VdH+A+kNecMI4Uu1EzB4Hr0pe//poiux0Ibz+NuxNOhvu8c6grVTHsnnwIALJ93VqSn3oOos9JBZnWQrdv+K17TKlUuaoDnwnLjJPkD1oz+UNML0e95/AW7Mu1ZLvDEuGIUtgnl6wyCtH2oLo8yRq5m+lnJv3aW4rWCAuRLhqVEz3SEe217vbSkHyJ0RZO6NfS0qQtSFpKVJOFJIwQfDUgdHOy/j9vLbtvOtdZDVJEiaCOXq7XtrB+kE8PvUNEWgvRXsv4i7HW/S3murnSmfhCaCMHrnsKwfNKeBH6mq1ekavT1+8KJYsV3LNLYM2WkHl1zvJAPmlAz7ndXgnSo0CC/NlupZjR2lOuuK5BCEjJJ8gAdZJbo3VIvfcSu3XJ4gqpTVvISrtQ3nDaP1UBKfq0RJFv0qbXa7AotNa62bPktxo6PwnFqCUj7SNa4WHbkK0LMo9sU8D1amQ24yFYwVlKQCs+ajlR8ydUS9H/AGP8Yt23rplM8cK3I/WpJHIyXQUNj6k9YryKU6vDuneEGwdvqzd9QR1jNNjlxLXFwl1wkJbbz3cSykZ7s6Im/wBJOyP5QNma/QGmusnJY9bgYGT6w17aAPNWCj3LOsrdbF0GqQq5Q4FapzoehT4zcmO4PnNrSFJP2EazL6WVj/EPfCuU9hnq6fPX8JQQBgdU6SSkeSVhaR5JGiKKNWx9Gv8Af1dn6Ma/i6qdq2Po1/v6uz9GNfxdEV4Z0uJAiLlzpTEWO3grdecCEJycDJPIcyNctNrlFqbnV02sU+asDPDHkocOPcknUZdMn+rTeH5mP/6lrWZcCXKgTWZsGS9FlMLC2nmVlC21DsKVDmD56ItZN1tvLZ3KtR+37lgoeQpJMeSEjrormOTjau4jw7CORyNZY7gWvUbKvWr2rVQPW6ZJUwtSRgLA5pWPJSSFDyI1qptPUKtVtr7XqleSpNUl0mM9L4k8JLimklRI7iSc47s6oT09mY7XSKqC2QAt2BFW9j8Pq+Hn+qlOiL66DO3yLz3ibrE5gO0y20JnOBQylT5OGEn9YFf+71o3qvHQBtZFD2NTW3G8Sa/NdklRGD1TZ6pCfdlC1D6erD6IjRo0aIm5uZd9NsKxKtdtWP8A2anRy4EA4LqzyQ2PNSilI9+sobyuKqXbdNSuStPl+oVGQp95fcCexI8EgYAHcABqzvpC9y/hK4YW2tLkZi0wpl1MpPJUhSfubZ+ghWT5rHenVS9ERo0aNEVwPRpVBSK1etKKzwvRokhKfAoU4kn++P3auxqhno3XCN1ria7lUMqP1Ptf++r56IuOuVSBRKNNrFUkojQYTC5Eh5fYhCQSo/YNZUb23/P3L3Jql1zeNDT6+rhsKOeojp5No9+OZx2qKj36tF6QfdT1aFH2so0n7rICJVZUg/Jbzlpk+8gLI8AjuOqUaIjVqehVZHUU+dfc5n7pJzEp/EOxsH7ose9QCc/kq8dVtsygTbpuqm29Tk5kzn0tJOMhA+cs+SUgqPkNaLW3R4Vv0CDRKc31cSEwlhod+EjGT4k9pPeSded+8PGfhqQUUZ70m/7R+Tp4AqZwamzyGU7N9VCPTOs1FUs2Nd8VoeuUhYakEDmqOtWOf0VkEeSlaqBrSu6aRHr9tVKhysdTPiuR1nGcBaSM+8Zz9Ws2psZ6HMfiSEFDzDim3EnuUk4I+0ap7ucSNRQvpXnWM6eDvwQfqq41AGSiQfq9QvHS1Yn38UH9JR/4qdIulqxPv4oP6Sj/AMVOvRVCrX7VaNhd3+q36vzaqvyvYXcE96huOK7FdctTkf6+a0+fEO8DVl9ZU74zpdM6Q941GnyHI0yLcsp5h5s4U2tL6ilQPiCAdEWjG/m21P3T24nW1K6tqYB19OkqH9HkJB4VfROSlXko9+NUC6N9KqFC6Udr0arRXIs+FV1MSGVjmhaUrBH2jV8OjfujE3W22i1vibbq0bEaqx08urfA+UB+Ase0PeR2g6bG6O0Qk7+2TurQow69iehittoHNaOBSW3/AHp5IV5cJ+adEU5axslf0p36Z/x1snrGyV/Snfpn/HRF5a0Q6BFj/FnZv4wymeCfcj/rJJGFCOjKGR9ftrHk4NUP24teXel+UW1YPEHqnMQxxAZ6tBPtr9yUhSj5DWt1Hp8SkUmHSqeyGYcJhEdhsdiG0JCUj6gBoirH6RG+fgnb+mWPEexJrj/Xykg8xGZIIB+k5wkfm1a8PR03x8JWXV7DlvZfpD3rcNJPMx3T7YHklzJP50a8ekX0cNyt1N0Z10M3BbUen9U3GgMPvv8AG0ygdhw0RkqK1cifla8+j10bNy9rt0qddTlwW0/BQlbE5hh9/jdYWMEDLQBIUEqAJHNI0RPHp7WP8Z9mjcEVnjn22/60CBlRjrwl4e4ews+TZ1nbrY6r0+JVqTMpU9lL0OYwuO+2rsW2tJSoH3gnWSW5Fry7Kvyt2pN4i9TJi2AsjHWIB9hfuUkpUPfoib2tZtjaN8X9nLQpBRwOR6PG60f+YpsKX/eKtZX2bSVV+76NQkAlVRnsRBjty44lH+etgW0JbQltCQlKQAkDsAGiKKrQ3IFR6SF67cPPApp1PhyIac8uLgBeHv8AuzX7J01enlZ/xk2Oeq7DXHMt6Siakge0WT7Do92FBZ/N6q3S9yvgXpmS74XIxBXcb8d9ZPL1Ra1Mknxw3hXvSNaL1+lw65Qp9FqDfWQ58ZyM+j8JtaSlQ+wnRFmJ0WLO+O2+luUt1rrIcaR6/MBGR1TPt4PkpQSj9bWmV5V2Ja9pVa455xFpkN2U4M4KghJVgeZxgeZ1WvoG7ZTLSqd8VmsM8M2NUF0JhRTjIZVxOqHilSurwfyNLHpBrx+AtoI1sx3eGVcMwNrSDg+rs4cWf2uqHuUdEUpdHW65V7bLW1cs94PTJUZSZC/FxtxTaj9qDqnXpD6P6hvdCqiEYRU6Oy4pXi4ha2yP2Uo+3U6ejxrPr+yEulrXldLq7zaU+Da0IcB/aUv7NM/0ldH46PZtwITjqZEmG4rx40oWgf8ALX9uiKntoV2ZbF1Uq4qerEumy2pTXPAKkKCsHyOMHyOtdLbq8Ov29Tq7TnOsh1CK3KYV4oWkKT+46x21ob0Ab0+MWzS7dkO8cy3JRj4JyfV3MraJ+vrEjyQNEVTul5ZnxK33rsVlrq4NTWKnEwMDgeJKgPIOBxI8gNTx6N+y+qgXDf8AKawp9QpcJRHPhThx4jyJ6oZ/JOlv0idkLq1k0S84MdTkqlSvU5HAnJUy+QEk+5wJAH/mHU7bIWciwtqLetUISl6HDSZRHzn1+26f21Kx5Y0RR904b0+Kexc+DHd4J1fcFNaAPMNqBU8fdwAp/XGs29WQ9IFenxg3fYtiM7xw7dihpQByPWHQFuH6k9UnyKTqJdjLLc3A3Xt+1QhRjypQVLI+bHR7bpz3HgSQPMjRFfjoXWP8S9jKW5IZ6uoVw/CknI5gOAdUn6mwg47ipWom9I7fPVQaDt5Dewp9XwnPSD8xOUMpPkT1hx+Sk6uCy22y0hppCW20JCUJSMBIHYAPDVPN7ejBufuNuhW7ucuK12mZj+IrLj7/ABNMIAS2k4aIB4QCccsk6Inr6P8Avj4xbRvWvKe451uSOqSCckxncrbP1K6xPkEp0l+kRsf4X28pt7xGcyaFI6mUoDmYzxAyfouBGPpq1+dGLo+bjbS7kfDs6vW7KpMqK5FnMRnni4pJwpCkhTQGQtKe0jkVasdetvwrrtGrW1UU5iVOI5FcOMlIWkjiHmDgjzA0RY/atj6Nf7+rs/RjX8XVXrlo823riqNCqTfVzadKcivp8FoUUnHlkatD6Nf7+rs/RjX8XRFdK77cot225Lt64YKZ1LmBKZEdS1ICwlQUOaSCOaQeR7tMeg7A7O0Oc3Np9g0vr2lBSFSC5ICSOw4dUoZ+rS3vXeb2322VWvFmGiYqm9StTCyQFpU+2hQBHYeFRx54047dq9PuCgwK5SpCZECfHRIjuj5yFgEHyPPs7tEXjdtxUW07dmV+4J7MCmw2yt55w4AHcAO0qJ5BI5kkAayr3mvV7cPc6uXe62plM+RlhpR5tsoSENpPmEJTnzzqXenrFvanbsdVXa5PqFvTUetUZpxWGWB2LbCU4TxJPLOOIpUnJJOq56ItZ9kKWmi7OWfTEp4SxRYoWPyy0krP7ROnjpMtMJTatJSjHCILITjw4BpT0RGmpu5esHb3bqsXbP4VJgxyWWicdc8fZbb+tRA8hk92nXqi/pDdx/hS6YG3NOkZiUkCXUeE8lSVp9hB+gg597h8NEVXK9VZ9crc2s1SQqROnPrkSHVdq1rUVKP2nXFo0rWjblYuuvx6HQoa5c2QfZSOQSB2qUewJHeTqySRkTC95sBqSdgqtaXGw3STo1Jm6+y90bdUWJWKnJgTYb7gZcXEUo9S4QSAriSORwcHy7uWYz1r0VdT10XbU7w5vMK+WJ8TsrxYq0no3eH+Vi4cn2vgJWB5de1n/LVyd275pW3NgVO7KspJbiNYYZ4sKkPHk20nzJ+wZPYNZnbE7mVLae/2bqp0NuenqFxpURbhQH2VYJTxAHhPElJBweaew6V+kFvbcu8FWjrqLLdMo8Mkw6ay4VoQo9q1qIHGvHLOAAOwDJztrGmBdleqd0XLUbhrMgyKhUJCpD7h7CpRzgDuA7AO4ADSXo0qWpQ51y3JT6DTkcUqc+llvlyTk81HyAyT5A6skkbGwvebAanwVQC42Csd0KrI4GZ1+Tmea8w6dxDuH+1cH14SD5LGrN6TLUokG27bp9BpyOGLBYSy34qwOaj5k5J8ydKevmrHsVditfJUnYmw6Abfk9bruKSnFPCGfXxRrPvf2nJpW8t0xUp4Qqep8D86A7/160E1RjpZISnfStqHatqMo+/qED/LXWe7WUjEpGcCw/ZzfyVHY428DT1/gqKdLViffxQf0lH/AIqdIulqxPv4oP6Sj/xU69sXLrX7WUPSE/79b6/T83+MrWr2soekJ/3631+n5v8AGVoiWOjNupJ2p3Jj1Vxbi6JNxGqzCefEyTycA71IPtDxHEPna1Agy40+CxOhPtyI0htLrLrauJLiFDKVA94IIOsbdXa6Ae7/AK7CO1dflZkRkqeojjiua2xzWx7081J/J4h2JGiK32sbJX9Kd+mf8dbJ6xslf0p36Z/x0RWu9HNY/r92Vq/pbOWaW16jCURyL7gy4oeaW8D3O6uTfF323ZNDNbuqrM0un9alnrnQogrVnCQEgknke7uOmn0abH/k/wBmKBQXmernrZ9bngjB9Yd9pQPmkEI9yBqsHpF75+ELuo9gQ3ssUpr12akHkX3RhCT5pb5/73RFY/8AnH7J/j9B/wCHf/0aP5x+yf4/Qf8Ah3/9Gsv9GiLXqxbxtm+KKqs2pV2KrAS8phTzQUAHEgEpIUAQcKB7O8apx6Rmx/Ubrot/RGcM1Nr1GaoDl17Yy2o+am8j3Na8vR0Xv8HXrWLElvYYq7HrcNJPISGh7YHmpskn80NWi6S1j/ygbMV+gss9ZPQx63AAGT6w17SQPNQBR7lnRFQrofUb4b6RlpsqRxNxZC5qz+D1LS1pP7SUj69aUXhVkUC0qxXXCAinQH5as9mG21L/AMtUe9HHRvW91q7W1oyinUgtJOPkuOuowf2ULH16s50wKz8CdHS7X0r4XJMZEJA/C65xLah+ypR+rRFmG4tbjinHFFS1kqUo9pJ7TrU7oy3h8eNkbbrTrvWTERRDmEnKuuZ+5qJ81cIX+sNZX6uR6N28OGTcthyHeS0pqkNJPeMNvfu6o/UdEVzGGGGAsMMoaC1lxfAkDiUe0nxJ8dZ0dO28fjNvnKpbDvHDt+OiAgA+yXflun38SuA/m9aB3vcES1LPrFyziPVqZDdlLGccXAknhHmSAB5nWRVaqMusVibVp7hdlzZDkl9Z+c4tRUo/WSdEVtvRqVngq95W+teeujxpjafDgUtCz/zEfZqW+nvR/hTo8TpgRxKpVQjTBy5jKiyf3Paq/wBAms/BfSHgwyvhTVYEmGfA4R1wH2sjV5N/qP8AD+yd5UsI43HaPIW0nxcQgrR/eSNEWT+p86Cd5/FffGNSpDvBBuFhUBYJ9kPfLZPv4hwD85qA9dVJnyqXVIlTgulmXDfQ+w4O1C0KCkn6iBoi2FqlPhVSGYdQitSo5WhwtuDKSpCwtJx5KSk/Vrku2uQrZteqXDUVcMSmxHZT3PmUoSVEDzOMDzOubb25Yt42NRbohYDNThNyeEHPApSRxI96VZSfMagf0g96fAW00S1IzvDLuKUEuAHn6uyQtf2rLQ8wVaIqG3PWZtxXHUq9UV8cyoynJT6vy1qKjjyydXA9HDY/BHr+4ctnm4RTICiO4YW8oe89WAfJQ1TKKw9KktRo7SnXnlhttCRkqUTgADxJ1rNs1ZzNg7YUC02gnjgREiQpPYt9XtOq+talH3Y0Rdd/XzadhUxipXdW2KTFkPdQ046lSuNeCrACQT2A88Y0yv5x+yf4/Qf+Hf8A9Gqp+kCvn4w7rx7TiPcUK3I/A4AeRkugKcPnhIbT5EK1WvRFqB/OP2T/AB+g/wDDv/6NSBZ1z0G8LfYr9tVJmpUx8qS2+2CASlRSoYIBBBB7RrH/AFcv0cN74Nwbey3u3FUgJJ9yHkj/AJRA+kdETK9ILY/wButFu2Kzww7ij8ThA5CS0AhfuygtnzPFpb9Gv9/V2foxr+LqwXTJsf47bGVYR2esqFG/+qRMDmerB6xI8ctlfLvITqvvo1/v6uz9GNfxdEViumT/AFabw/Mx/wD1LWof9Hnub65Spu2FVkZehhUyklZ+U0T91aH0VHjA8FK7k6mDpk/1abw/Mx//AFLWs4bAuip2VedKuqjucE2myEvIBOAsDkpB/JUklJ8idEWj/Sw2zG5m002HDYDlbpmZtMIHtKcSPaaH005GPwuE92sxFApUUqBBBwQe7WvtjXLTLxtCl3RR3esg1KMl9rJ5pz2oP5STlJHiDqg3TT2ml2luu5WKDTXnaRcQXMbQw0VBl8EdcjAHIcSgsd3t4HZoivTs/UU1fae0qmlQV6zRYjisdyiynI+o5GnVqCugtcia/wBHymQ1OBcijSXoDvPngK6xH1cDiR9Wp10RNrdG74FhWBWbtqOCzToynEtk461w8m2x5qWUp+vWTdw1efX69PrlUfL86fIXJkOH5y1qKiftPZq13pEtxvW6vTdtKc/lqFwz6pwntdUPuTZ+iklZH5afDVQtERq8PRi24RZNloqdQj8NdqyEuyCoe0w12oa8uXNXmcfNGq+9Fjb8XjfqanPY46RRimQ8FD2XXc/c2/MZBUfJOO/V3teT+8THjcYbCer/AOB/J8l0ODUn++7y/KivpXsB7YuuL4cllyMseX3dsf4E6otrQLpBQzO2XullIyUwVPf/AKyF/wDTrP3Up7tZL4bIzk8/drfwtfHG2naen8lGjRo16IoZGrN9CqyON6dfk5nkjih0/iHef9q4PqwkHzWNV0tykTa/X4NEpzfWS5z6GGh3ZUcZPgB2k+A1otZlAhWtatOt6nJxGgsJaScYKz85Z81KJJ8zrz73g4x8JRCkjPel3/aN/rt4XUxg9N2kvaHZvqlfRo0a8QXVI1QzpOzEzd8rjcQcpbcZZHvQy2k/vB1fB91thlbzywhttJUtRPJIAySdZt3lV1V+7qvW1ZzPmvSAD3BayoD6gca9L92dMXVk0/BrbfU3/wDVQeOPtG1nM+n/AGknX0044y6h1pam3EKCkLScFJHYQe46+dGvZVzKcvx/vv8AHa5P7Uf/ANWm/MkyJkp2XMkOyJDyyt111ZWtaiclSieZJPedP7ava2bedNnV6fV4lv25APDJqUoZTxciUpTkZIyO0jtHaeWlqs7ebXmiT5dA3bjSpkKO48I0iEW/WClJPAgkjJOMDHFqJlxujimMJJLgbGzXOAJ4EgED6rYbSyObm4dSB6qIte8GXLgTGpkGU9Fksq4mnmXChaD4hQ5g+7T02h2+Yv5+rtP3LBoYp0X1gGSnPW9v5QwkY5q54yOR0xNb0dVFJM+Fp7zLXFjpfUa7HyWJ0bmtDjsU5fj/AH3+O1yf2o//AKtNxK1pcDiVKCwchQPMHx186NbCsTl+P99/jtcn9qP/AOrSFUZ02pTXJ1RmSJkp05cffcLjizjHNRJJ5Aa59GiI0aNO3a2wa1uFcJpVI6pltlHWypTxIbYbzjJ8Se4Dt8gCRhqKiKmidLM7K0aklXMY57g1ouSm1Tp02mzW51OmSIcpo5bfYcLbiDjHJQII5E6Xfj/ff47XJ/aj/wDq1Iw2v2mU+aYneiGKiDwlxUHEfi+nxcOPPi1DlTjtRKlKisyUSmmXltofQMJdSCQFDyOM/XrVosTgrSRFm05tc3Q8swF1klgfF81vIg+i66NcNfoq33KPXKnTlyCC+qJLW0XcZxxcJGcZPb4nXtV7rumrwzDq1y1moRioKLMqc66gkdh4VKIzpG0akFhRrrpNTqVImCbSahLp8oApD0V5TSwD2jiSQca5NKtq27WrprLdHoEBydOcBUlpCkp5DtOVEAAeZ1ZJIyJpe82A3J0AVQC42C6KjeV31KE5CqN1V2ZFdGHGX6g642sZzgpKiDzA0ha958V+DOkQZSOB+O6pp1OQeFSSQRkcjzGvDVwIIuFQ6Lop02bTprc2ny5EOU0ctvMOFtaDjGQocxyOlty/L5cbU25edxrQoEKSqqPEEHtBHFpuaNVRGjRo0RLlMvC7aXBbg0y6a5CiNZ6tiPPdbbRkknCUqAGSSfr1x1quVquOtu1qr1CpuNJ4W1y5K3igeAKicDSfo0RekZ96NJakxnnGX2lhbbjailSFA5CgRzBB5504fj/ff47XJ/aj/wDq0v7ZbR3He1PcrRfiUWgM56ypz18DZx28I+djvPId2c8tOY7W7VBXqp3tp/rXZx+o/cs/S6zGPPi1Dz49QwymIuLnDfK1zreOUG3hutllJK5odawPMgeqhuZJkzZbsuZIdkyHllbrrqyta1HmSonmSfE68dK940iPQbmnUiJVotXYjLCUTYxy08MA5TzPjjtPZpI1KxyNlYHt2IuPNa7gWmxRrrpVSqNJmpm0qoS4EpIIS9GeU0sAjBAUkg89cmjV6onGu/b5WhSF3ncakqGFJNUeII8PlaTKLW61RHXHaLV6hTHHU8Li4klbJWPAlJGRpP0aIlypXjd1ThOQaldNcmxXQA4xIqDrja8HIylSiDzAP1aQ9GjREtUq7brpMJMKlXNWoEVBJSxGnutNpJOThKVADJ17u3zez2OtvC4XMdnFUnjj+9pvaNEVovR43yii7i1Ky5rwRHrzAcihR5essgnA8OJBX7yhI1djcO6qbZFkVa66srESmxlPKTnBcV2IQPNSilI8yNZJUGqz6HW4NZpchUedBfRIjup7ULQoKSftGrA9KzpBMbn2hbVv0JLkaMphE6stkEASuaQyPFKPaVnsPEk9o0RQNd1eqN03RUrjq73WzqjJXIfV3cSjnA8AOwDuAA0nRWHpUlqNHaW686sIbbQMqUonAAHeSdeep36Hdi/Dt5u3XOZ4oFFI6jiHJclQ9n9ge15Eo1HYtiMeG0clVJs0fU8B5lZqeAzyCMcVZLZayWbC2/gUMJQZhHXznE/PfUBxc+8DkkeSRp6a85L7MaO5IkvNsstpKluOKCUpA7SSeQGkigXfatflORKHcdJqUhsZW1FlocUB44Bzjz7NfNk76itkkqXguJNybaa+i7dgZEAwacl03TThWLZqtIOMTob0bn+Wgp/z1ms4hTa1IWkpUkkKB7Qdad6z430t9ds7sXBTSgoaVLVIY5curd9tOPcFY+o69H92VWBLPTE7gOHlofUKFx2O7WP8kydGjXbQ6XNrVYh0imsKfmTHksstj5ylHA9w8+7XrbnNY0ucbALnQCTYKwHQrsozK3OviazlmCDFglQ7XlD21D6KDj9c+GrYab+3NrxLMsqmW3D4VJhshLjgGOtcPNa/rUSf3acGvm72kxY4tiElR+nZv7Rt9d/ErtqKn+HhDOPHxRo0a/FEJSVKIAAySe7UEttRd0oLtTa209Qbad4Z1WHqEcA88LB6xX1I4ufiRqimpR6Sm4Kb8v5YgPcdGpYVGhEHk5z9t39YgY/JSnUXa+hPY3B3YXhrRILPf3j0vsPIfe643E6kTzm2w0CNGjRrrFHqxW08eBuR0fpm2cCqR6fcMSWqUy08rhElPHxg8uZHMpOM8JCSR2ahi97Huqy5Yj3JRZMHiVwtvEcTTn0VjKT7s50gR3no76H47rjLragpC0KKVJI7CCOw6sr0bLxrG43wvt3e5VXaUunKeS/IHE61hSE4K+0/LyFH2gU8j4cjVtqcC7asiIfC52dzTo4E2uWnY87HyKkYyyryxu0cBYHgeV/yo36P1g0S/JdwNVpyYhNPp/rLPqzgRleT25ScjSHs7t9O3Euv4KYkCHDjtl+dLUnIZaBxyHeonkB7z2A6k3oiNJYrl7socDiW6UpKVjsUAojOvnouoXL243Pp1N51d+lgMJT8teWnwkJ/WOPeRrXxDFamnfXGN3y9kG32bn0Jt538lfDTseIgRvmv1skqZA6O7k825FqF0su8XVJriihccL7ApSeRKM94SOXeO3SXv/tpS9uafarUSS/Inz4zqp61OBTRcQG+bYwCE5Urtz3aikJUVBIBKicAY551YHpeMPxqHt1GlIUh9qlrQ6lXaFBLAIPnnWy+KagxOkhbO5zX57hxvezSb/XhttaysDmywSOLACLWt1K+bg2m28ty27cu+4a3VIlGmU5l1+M0pLkmVJWgL4GvZASkDJJPkMjOdc07brbm99vqvcu18mrRp9FbLsqnVAhSloAKu7OCQlRBCiCUkYHaPbpRKP8AJvtOnJ4TR1HH+5i6Oh5zevZB5pVR+Y7jzV/76h2zVjcI/qZncXtcbC/dIEmWxFtbjjuOGy2SyI1PYZBYjz2uoC1OXRVrNE6u7LIqtQTTHrlhCPFlKOML4HEFIJ+d90ykcskEdpGoN0a7XFMPbiFK6nc7Le2o4EEEH6jZRcExhkDwLp97jbTXtYy3XarSlv05CsCfF+6MEdxJHNH6wGlbo+2PbO4NRrNBq8mZGqqYZfpq2nUpQVDIUFgpOcFSDgEcgrS30c9zbtj3rSbRmzXqxRKk6IjkSWet6pKhjiQTkgDvT8nGeXeEu6pUTazpKSZdDTwQabUUOdS32BpxCVOtDyAWpI8MDUBLU4lIJcOkIEwZnY9ugNjbUHY3sDuCCVttjgGWZvy3sQeCjeLRqhIuJq30x1CouSxDDR7Q6V8HCf1uWpbvnaagN7y0LbW1J0syX2AuoyZS0rDR4Ss8KQBghtJVjPPiAzqSlWNTofSVkX2so+LjdKVcJfAy3xlJSefjnLuq8P39XE7ov7gQnQ1U1TVyWwscSUpOR1ZHengPB7tWwYlU4vIH0bsobFfp2jxoD+2xv4qr4GU7bSC93fYb28U/rjp+wVCrE+1pTF5OTIDi47tSbcb4euRkKASe7iBGeH93PSt0OPih8b2+t+FvjVwv9Tw8Hqnq/Ant+dx54vLs13Udzbjfye/ClUV6171dZU6mVGVxsyVJHMkcuI95BAVj5x02uipCepm/3wbK4Q/FZlsOYORxIBScfWDqMqnGTCaqCZ0glay7g434HUEaFrje9uWwWeMWqI3tALSdCB69QkPej+TD1upfFb4yfD/wo561671fq+OJfWcPDz+VjGe7Sw/Ylg7eUKmStzXaxPrtTZEhukU1SUerNHsLqlYOe7kRzBGDjOmLPVGa3hkLnYEZFwKL/F2BAkHiz9WdTv0kLmsmibjGPc+2Ir0lyG041OVVnWA43zGAlKSBghQ1vVMlRTupqKIvcHNLjZzcxtawDnFtgL3NjfyusTAx4fK6wIIGxtx4C6jS/LAtaZt0NxtuZlQcpLD4j1GBP4S9EWSADlPaMqT4/KBz2gKVh7UWxcGzjN61StSKT6tPWKlIUoKbRGRnIQjhyXCShI59p7D2a8J279qs2BXbStrbhNFZrDfC64Kst4JXywrhUjnjHcRpXiKI6FcwAkBVZAPn91RrHNLicVMyOQuYTM1rSS0uyOHGxIJBvvyF1c1sDnlwANmkne1x42XrbtgbR7k0upUvb6VXoFxQY5eZTU1J4ZIGBkgZHCSQMjhI4gcEctJ9NtjZC36u3aV4Vatz65xhmbNiEIhRHjyKAflHhPIqwoZB7OYHL0OCRvK2Ae2nv5/u6i+8iTd9ZJJJM9/JP5xWs8VHUSV81Cal+RrWuGveu64+a17C17dVY6RghbLkFySOmnROLe2wXdur4doYkKlQ3WkyYbywApbSiRhWOXEClQOO3GeWcabVqUpVdumk0RKihVQmsxQr8HrFhOf36mfpkEqrVouK5rVRU5J7T7WobsyqihXhRq2pJUmnz2JKkjvCHEqI/dqUwasqKvCGTON5C0+ZFxfzstepjZHUlo2uph6W9wORK/A26pGYdCosNr/srZwlbhTlJPjwp4cZ7yo9+oWg0erTmeuhUudKaB4eNmOpac+GQO3U0dMK3XxeEO94I9Zo1ZiNcMpvmgOJTgDPgpHCR48/DTG213Nvi1ERqFQK4YdOemJccZ9VZcypRSFHiWgnmAO/WngL3swSF9GGl1u9mJHe/VcgE3v0WWrANU4SkgcLcuHJNil0h74zU6l1aLKiiRJaQ4haC2vgUsAkZHv56na79rNqdu7glSL0q9VVTX1JTSaewsLkOpCE9Y64pIGE8ZIA9ns79cnSh/rF0L8xC/jL0k9M11xe8KELWSlumMJQCfkjiWf8SdaYrajFZ6QNkMbZY3OcGnXQttY20PW211l7JlO2S4zFpAF/NI21e2dLrVs1G+rzqr1ItOAso42UgvSV5A4UZBxzIGcHJOB2EhxW1bex+4FRNuW4/ctu1l1JEJ6epDjT6gM8JAJ54B5ZT5EnlruvNC5PQztRdMBMeNUszQj5vtvglX66k/anUQ7Wx5sncm2macFmUapHLZT2pw4kk+4AEnyGskfxGIRVNSZ3MLHPa0A2Dcn/ACFtb7m/A6WVrskLmR5AbgE8zflySvbVhuJ3oh2Bc6XWSZ4iySwvBKSMhSCR2EYIJHYdJ+71vQLU3IrNvUxT6ocJ5KGi8oKWQUJVzIAHaT3amu/5UNXTRonVKRxNvRGnyP8A7hRyB88KQNRf0lmXGd8LlS4gpKn21jPeC0gg6zYVic9XWwmQ2D4A8jhmzDX/ADgraiBkcTrcHWv0suutWDRIfR1oe4DTkw1edUFRnUqcBZCAt9PJPDkHDae/x0uWNtHbtxbNxbzm1l6kramufCcl1QU01GRxZKEAZKyeAAZ7T2aU7uZdZ6FlppdbUhSqspYChj2VOSiD9YIP16+oiJC+hNK6gLKU1Tid4fwOvT2+WeHUdJX1b4O5KQTUll+TbkW5acFmbDGH6tv3L+dlyWpb2wN4VFFrUqZdVLqj56uHOmlvgfc7hgEjn4EJz2AgkaiW/rXqNmXbPtyqcJkRHMBxPyXUEZSseRBB8uzu14WaxMk3dR49OCzMcnMpY4e3j4xj9+pU6Zr0Z3eJLbBT1jNMYQ/j8PiWoZ/VUnUxB21DirKUSueyRjjZxuWlpGoPI3257LWfllpzJlAIIGnG6hXRo0a6ZaK9IzD0mQ1HjtqdedWENoSMlSicAAeJOtC9nrPasbb2mUBKU+sob62YtPz3181nPeAfZHkkapLsjXLetvcyk1q52HnYEVwqBbTxdU5jCHCntISTnA58gRnGDf2j1On1imsVKlTGJkN9PE08ysKSoeRGvJ/eXV1H9qnDSI9yeBOwHkNfNdDgcbO8++u3koC6cM2rMWnQIcZbqKZJlu+ucJwFLSlJaSrxH+0OPFIPdqr1qVCq0q5adUKGt1NSZkoVG6v5Sl5wE4789mO8HGtFLqt6jXTRH6LXoDc2C9jibXkYI7FAjmkjxHPTPsbZbb+z6umr0ylOPzmzll6W8XSyfFAPIHzxkeOtD2e9saLDcJNJLES4X2tZ1+fodDostZhss9R2jXaaeSkROcDIwe/UB9LrbWXclKjXdQoqpFRprZalstpyt6PnIUAO0oJJx3hR8NT7o1xGE4nNhdWyqh3bw4EcQpWogbPGY3cVmMwy8++hhhpx15xQShtCSpSiewADmTq3nRd2eftRHxuuiMG6y+3wxIyxlURsjmpXg4ocsfNGR2kgTexRqQxPXUGKVBamLzxyER0JcVntyoDJ13a632g9u5sTpjTQM7Nrvm1uT02Fhz5qOo8JbA/O83I2Ro0a+XXG2mlOurS22gFSlKOAkDtJPcNcAphfWq39Kvd9uFEk2HbUoKmPAt1SS2r/AGKD2spP4R+d4Dl2k48d+ekKwwzItywJQdfUC3IqyD7LY7CGT3n8vsHdntFWnFrccU44pS1qJKlKOSSe0k69U9jvYx+dtdXtsBq1p3vzP8D66b8/iWJixiiPifwvnRo0a9cXOo0aNGiKUrIv+wolpxLdvDbWJV/VSsonsPlqQsKWVYURgnGcfKxgdmlOq7y0ekW3NoO2VlsWuiejgkzlvl6QpOCMAnmDzOCVHGTgA89Q1o1DSYBRSSmR4cbm9i5xbe975b236WWyKuVrbC3K9hf67qQdltxWtvJNaedpK6j8JQvVQEvhvq+eeL5Jz7tIG3d5Vuxblar1CeSl9CShxtwZbebOMoWO8cgfEEAjTd04dvrrl2ZcjdbhwYE5xLS2lMTWi42pCxhQwCOeMj69Z6jD4cs0jYw90gFwTo6wsBrcD6K1kzrtBdYDbopImbwW/MqaapQ9pKLHul5wFuYXS+kPE8lpZCACvJyDnOfHSp0xpjxmWbSJ73W1OJSesmHIJ418IJOPEtqOkljfOBTnfX6BtZaFLqoB4JiI4JQT3pACSPt1Fd0V6rXNXZNbrcxcudJVxOOKwPIAAcgAOQA7NQGH4M8V0VR2PZNjB3fncSRYAamzQL6X3Oy25qkdk5mbMTbhYf8Aad26u4rV7W1aFIbpK4Jt6EYqnFPhfX5Q0niA4Rw/7LOOfbo2Y3Fa29dri3aSuofCkL1YBL4b6vt9r5Jz29nLUfaNT/8ASKT4Q0WX+2eFzxObe999VqfEydp2t+9/8sjT92uvW27ahVCmXNY8G5Ic5aFlbi+B5kpBA4FYOPlHs4Tz7dMLRraq6WOriMUl7HkSDpruCCsccjo3ZmqcIe71g2mXZu3u2TNPq60FKJs6Wp7qcjBKQST9ik6huqTp9aq8ioznnJc6Y8p11ZGVOLUcnkPM9g1x6eG097N2FcL1b+AINYkerKbiiV2R3eJJDoOCcgAjlg8+0aj48Ojw5j5aZhfIR+pxJPIZnE2CzOmdMQ15s3oNB5BTNuncVWszo225ZFYdCbiqkYNvN9jjENKyoJV4HHA3jyWO7UDWHWKRQrlYqNct9mvwUIWhyE67wJVxJKc5weYzkcu3HZ26870ues3fcMiu12UZEx8+GEoSOxCR3JHh/mSdI2seE4O2lpHxS/NIXOfluNXbgEWIAGg+qrUVJkkDm7NsBfpzU2Uvdjb+zzIqO323K4FbeaU0iVOnreSwD28KSTn+778ctR1YF6VO0b9i3eykTJTTq1vodVjrwsELBPcSFHn3HB02NGs8ODUkTJG2Lu0FnFzi4kbWuSTbVWuqZHEG9rbWACkreC87Du5szbest6i1uTM9Zmy1SitLoKVcSQjPCCVEKyAOzz0sUfeGj1W14Vubm2c1c7MBPBEmokFmShOMYKhzPIDmFDOBkE89Q7o1YcCpDAyEgkMN2nM7MPB17jwvZV+Lkzl2mu+gsfLZSBftz7dT6D8F2ft8qjPF5Lip79QW87gZykJVnAOfHuHLQ1uI0jZB7bj4KWXHJ3rXrvXjA9oK4eDh8u3Oo/0azNwqnEbY3XdlcHC7nE5hsbkk+W3RWmofckaXFtABonrsvfLe3t6ouJ2mrqKUx3GepS91Z9rHPOD4eGmrWpgqFYmzw2WxJkOPBBOeHiUTjPf265NGtltJEyd1QB33AAnoL26cSsZkcWBnAKQN6NxGtwplGfapS6d8GwRFIU+HOswc8XyRj3aj/Ro0o6SKjhbBCLNGw368UkkdI4uduVKO2289atagqtmr0uFc1uqBAgTvmDOeFKiCOHPPBBA7saWm9ytn40hNQi7No9cQoLSlVSV1YUDkcsEf3dQpo1HTez9DLI6QNLS7fK5zQfENIBWdtZK0Bt722uAfVPvcXceVeu4sO75lMZiGL1KUR2nCrKG1lXNR7zk88fVrz3qvpvcS9DcLVNXTk+rNsdSp7rD7OeecDx8NMjRrahwulgdG6NtjGC1up0BtcfYbrG6okeCHHc3KkTafdKZZUGdQp9Kj1626jn1qmyFYGSMFSTg4JAGcg5wOw89Oen7sWDaKn6ht7tuIFadQpCJlQmqfEfI58CST+4p88jlqFNGteowGiqJHSPae98wDnAO/cAQD5jXir2VcrGgA7baC48ClJyu1Zy5PjG5OdXVfWhL9ZJ9rrgriCvt1Mtd3msG6mo1UvHbBup3DHaCOubmKbadI7OLHPhz81QVjx1BGjWWswilqyxzwQWaAtJaQOIu0jTorY6mSMEDjz19VKu4G8cm8tuE2rPozUd5uoCSy7HWEMstJSpKGUN45BIOM57tSLYFyvWn0TUVdqFFntiqrZkRJSOJqQ0tzhWhXvB7f8ezVZdPQbh1IbTnbr1GJ6iZXrPrHtdbxcXFjtxj6tRWIez0LoIqemjGTtA5wvw1v/gWxDWOD3PedcpA/hPqj7sbb2s6us2ftamHX1JIbelT1vNMKI5lIOT3nsCTg4yNRDcVYqNwVyZWqtIVInTHS684e8nwHcAMADuAA0n6NS9HhVNRvdJGCXHQlzi425XcSbdFrS1D5AGnYcAAPRGjRo1IrCjTr283Duyw5pkW9U1tNLVl6K6ONh36SD3+YwfPTU0aw1FPFUxmKZoc07gi4VzHuYczTYq39hdJ22KkhuPdkF+iSuxT7QL0cnx5e2n3YPv1M9u3NbtxMB6hVun1JGMn1eQlZT7wDkfXrNnX2044y6l1pxTbiTlKknBB8jrgcR93NBOS6meYzy+Yfex+6l4camZo8ZvstOtGs8qRufuHSQlMK8q0lCeSUOSlOpHuSvI0vNb9bsoZKRdqzjHNUGMT9pb1zUvu0xAH+3KwjrmH8Fbzcch4tP2V79c1SqECmRVS6lNjQo6flOyHUtoHvKiBqhFT3j3PqKSmRedTQD2+rlLB+1sJ0zanU6lVJHrFTqEuc8f8AxJDynFfaok62Kb3ZVBP+onAH/iCfWysfjrB8jD5/4Vc+++kVYVvIcZpL7twzU5ARE9lkHzdPLHmkK1WndHeK8r+K406WIFKJ5QIhKWyO7jPas+/l4AajvRrucH9kMNwsh7G5nj9TtT5cB9L9VFVOIz1GhNhyCNGjRrqFoI0aNGiI0aNGiI0aNGiI0aNGiI0aNGiI0aNGiI0aNGiI0aNGiI0aNGiI0aNGiI0aNGiI0aNGiI0aNGiI0aNGiI0aNGiI0aNGiI0aNGiI0aNGiI0aNGiI0aNGiL//2Q==" alt="Namvar Sign System Group">
+    <div class="brand-text">
+      <h1>سیستم محاسبه قیمت لایت‌باکس فریم‌لس</h1>
+      <p>محاسبه خودکار قیمت · چیدمان SMD · نقشه شماتیک</p>
+    </div>
   </div>
   <div class="login-bar" id="loginBar">
     <input type="text" id="uname" placeholder="نام کاربری" autocomplete="off">
     <input type="password" id="upass" placeholder="رمز عبور">
     <button class="lbtn" onclick="doLogin()">ورود ادمین</button>
   </div>
-  <div class="admin-badge" id="adminBadge" onclick="doLogout()">⚙ ادمین · خروج</div>
+  <div class="admin-badge" id="adminBadge" onclick="doLogout()">
+    <span class="sync-dot" id="syncDot"></span>
+    ادمین · خروج
+  </div>
 </div>
 
 <div class="wrap" id="appWrap">
-  <!-- ══ LEFT: INPUTS ══ -->
   <div>
-    <!-- customer inputs always visible -->
     <div class="card">
       <h2>ورودی سفارش</h2>
       <div class="row2">
@@ -137,22 +124,15 @@ svg.schema{display:block;width:100%;min-width:320px;height:auto}
         <div><label>ارتفاع (cm)</label><input id="H" type="number" value="150" min="30" max="300"></div>
       </div>
       <label>نوع پروفیل</label>
-      <select id="prof">
-        <option value="p6">ارتفاع ۶ سانت</option>
-        <option value="p9">ارتفاع ۹ سانت</option>
-      </select>
+      <select id="prof"><option value="p6">ارتفاع ۶ سانت</option><option value="p9">ارتفاع ۹ سانت</option></select>
       <label>جنس زیرکار</label>
-      <select id="back">
-        <option value="mdf">MDF (معمولی)</option>
-        <option value="pvc">PVC (ضدآب)</option>
-      </select>
+      <select id="back"><option value="mdf">MDF (معمولی)</option><option value="pvc">PVC (ضدآب)</option></select>
       <label>تعداد (عدد)</label>
       <input id="qty" type="number" value="1" min="1">
       <button class="btn" onclick="calc()">محاسبه قیمت</button>
     </div>
 
-    <!-- ADMIN ONLY: raw material prices -->
-    <div class="card admin-card admin-section" style="margin-top:14px" id="adminPanel">
+    <div class="card admin-card admin-section" style="margin-top:14px">
       <h2>⚙ تنظیمات ادمین</h2>
       <div class="mini">
         <div class="row2">
@@ -183,150 +163,191 @@ svg.schema{display:block;width:100%;min-width:320px;height:auto}
           <div><label>آستانه پرت (٪)</label><input id="wasteTh" type="number" value="20"></div>
           <div><label>رمز ادمین</label><input id="adminPass" type="password" value="admin123"></div>
         </div>
+        <div class="jb-section">
+          <label>🔑 GitHub Personal Access Token</label>
+          <input id="ghToken" type="password" placeholder="ghp_...">
+        </div>
+      </div>
+      <div class="save-row">
+        <button class="btn-s" onclick="saveSettings()">💾 ذخیره</button>
+        <button class="btn-s blue" onclick="loadFromGitHub()">☁ دریافت از GitHub</button>
+        <span id="saveStatus"></span>
       </div>
     </div>
   </div>
 
-  <!-- ══ RIGHT: RESULTS ══ -->
   <div class="card">
     <div id="out"><div class="empty">ابعاد را وارد کنید و «محاسبه قیمت» را بزنید</div></div>
   </div>
 </div>
 
 <script>
-// ── CONSTANTS ──
 const SHEET={mdf:{w:244,h:183,price:()=>+g('p_mdf')},pvc:{w:244,h:122,price:()=>+g('p_pvc')}};
 const PROF={p6:{label:'ارتفاع ۶cm',price:()=>+g('p_prof6')},p9:{label:'ارتفاع ۹cm',price:()=>+g('p_prof9')}};
 const PLEN=600,PMIN=40;
-const LED_LEN=950,   // mm (raw strip = 950mm)
-      LED_MARGIN=60, // mm margin from edge (6cm)
-      LED_GAP_H=70,  // mm gap between segments horizontally
-      LED_GAP_V=130, // mm spacing between rows (across)
-      LED_CUT=79.16, // mm per cut unit (exact)
-      LED_W=15;      // mm strip width
-const SMD_PER_STRIP=12; // SMD chips per full 950mm strip
+const LED_LEN=950,LED_MARGIN=60,LED_GAP_H=70,LED_GAP_V=130,LED_CUT=79.16;
 const ADMIN_USER='admin';
+const LS_KEY='lightbox_v2';
+const FIELDS=['p_prof6','p_prof9','p_mdf','p_pvc','p_led','p_print','p_labor',
+  'pw10','pw16','pw25','pw33','margin','wasteTh','adminPass'];
 
-// ── HELPERS ──
 const g=id=>document.getElementById(id).value;
+const el=id=>document.getElementById(id);
 const fmt=n=>Math.round(n).toLocaleString('fa-IR');
 const toFa=n=>n.toLocaleString('fa-IR');
 let isAdmin=false;
 
-// ── AUTH ──
+function setStatus(msg,c='var(--mut)'){const s=el('saveStatus');if(s){s.textContent=msg;s.style.color=c;}}
+function setSyncDot(st){const d=el('syncDot');if(d)d.className='sync-dot'+(st==='ok'?' ok':st==='busy'?' busy':'');}
+
+function saveLocal(data){try{localStorage.setItem(LS_KEY,JSON.stringify(data));}catch(e){}}
+function loadLocal(){try{const r=localStorage.getItem(LS_KEY);return r?JSON.parse(r):null;}catch(e){return null;}}
+function fieldsToObj(){const d={};FIELDS.forEach(id=>{const e=el(id);if(e)d[id]=e.value;});return d;}
+function objToFields(data){FIELDS.forEach(id=>{const e=el(id);if(e&&data[id]!==undefined)e.value=data[id];});}
+
+// ── GITHUB CONFIG ──
+const GH_USER='shahabshamchi';
+const GH_REPO='Light-Box-Calculator';
+const GH_FILE='prices.json';
+const GH_API='https://api.github.com/repos/'+GH_USER+'/'+GH_REPO+'/contents/'+GH_FILE;
+const GH_RAW='https://raw.githubusercontent.com/'+GH_USER+'/'+GH_REPO+'/main/'+GH_FILE;
+
+async function readFromGitHub(){
+  try{
+    // raw URL bypasses auth, always latest committed version
+    const r=await fetch(GH_RAW+'?t='+Date.now());
+    if(!r.ok)throw new Error(r.status);
+    return await r.json();
+  }catch(e){return null;}
+}
+async function writeToGitHub(data){
+  const token=el('ghToken').value.trim();
+  if(!token)return false;
+  try{
+    setSyncDot('busy');
+    // get current SHA (needed for update)
+    const meta=await fetch(GH_API,{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}});
+    if(!meta.ok)throw new Error('auth: '+meta.status);
+    const mj=await meta.json();
+    const sha=mj.sha;
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2))));
+    const put=await fetch(GH_API,{
+      method:'PUT',
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify({message:'update prices',content,sha})
+    });
+    if(!put.ok)throw new Error('write: '+put.status);
+    setSyncDot('ok');return true;
+  }catch(e){setSyncDot('');console.error(e);return false;}
+}
+async function saveSettings(){
+  const data=fieldsToObj();
+  // remove token from saved data for security
+  delete data.ghToken;
+  saveLocal(data);
+  setStatus('در حال ذخیره...','var(--acc)');
+  const ok=await writeToGitHub(data);
+  setStatus(ok?'✓ ذخیره و sync شد':'✓ ذخیره محلی (Token نداشت)','var(--ok)');
+  setTimeout(()=>setStatus(''),3500);
+}
+async function loadFromGitHub(){
+  setStatus('در حال دریافت...','var(--acc2)');
+  const data=await readFromGitHub();
+  if(data){objToFields(data);saveLocal(data);setStatus('✓ دریافت شد','var(--ok)');}
+  else setStatus('خطا در دریافت از GitHub','var(--warn)');
+  setTimeout(()=>setStatus(''),4000);
+}
+async function initSettings(){
+  // always load from GitHub raw (public, no auth needed)
+  const gh=await readFromGitHub();
+  if(gh){objToFields(gh);saveLocal(gh);setSyncDot('ok');}
+  else{
+    // fallback to localStorage
+    const local=loadLocal();
+    if(local)objToFields(local);
+  }
+}
+
 function doLogin(){
-  const u=document.getElementById('uname').value.trim();
-  const p=document.getElementById('upass').value;
-  const ap=document.getElementById('adminPass').value;
-  // We check pass against the field (admin sets it); username fixed
-  if(u===ADMIN_USER && p===ap){
+  const u=el('uname').value.trim(),p=el('upass').value,ap=el('adminPass').value;
+  if(u===ADMIN_USER&&p===ap){
     isAdmin=true;
-    document.getElementById('appWrap').classList.add('admin-mode');
-    document.getElementById('loginBar').style.display='none';
-    document.getElementById('adminBadge').style.display='flex';
-    alert('ورود موفق. پنل ادمین فعال شد.');
-  } else {
-    alert('نام کاربری یا رمز اشتباه است.');
+    el('appWrap').classList.add('admin-mode');
+    el('loginBar').style.display='none';
+    el('adminBadge').style.display='flex';
+  }else{
+    el('upass').value='';
+    setStatus('نام کاربری یا رمز اشتباه','var(--warn)');
+    setTimeout(()=>setStatus(''),3000);
   }
 }
 function doLogout(){
-  if(!confirm('از پنل ادمین خارج شوید؟')) return;
+  if(!confirm('از پنل ادمین خارج شوید؟'))return;
   isAdmin=false;
-  document.getElementById('appWrap').classList.remove('admin-mode');
-  document.getElementById('loginBar').style.display='flex';
-  document.getElementById('adminBadge').style.display='none';
-  document.getElementById('uname').value='';
-  document.getElementById('upass').value='';
+  el('appWrap').classList.remove('admin-mode');
+  el('loginBar').style.display='flex';
+  el('adminBadge').style.display='none';
+  el('uname').value='';el('upass').value='';setSyncDot('');
 }
 
-// ── PROFILE WASTE (1D bin-pack) ──
-function profileCalc(W,H,ptype){
-  // W,H in cm
-  const pieces=[W,W,H,H].sort((a,b)=>b-a);
-  const bars=[];
+function profileCalc(W,H){
+  const pieces=[W,W,H,H].sort((a,b)=>b-a);const bars=[];
   pieces.forEach(p=>{
     let placed=false;
-    for(const b of bars){if(b.rem>=p){b.rem-=p;b.cuts.push(p);placed=true;break;}}
-    if(!placed) bars.push({rem:PLEN-p,cuts:[p]});
+    for(const b of bars){if(b.rem>=p){b.rem-=p;placed=true;break;}}
+    if(!placed)bars.push({rem:PLEN-p});
   });
-  let dead=0,reuse=0;
-  bars.forEach(b=>{b.rem<PMIN?dead+=b.rem:reuse+=b.rem;});
-  const used=pieces.reduce((a,b)=>a+b,0);
-  return{bars:bars.length,used,dead,reuse,charged:used+dead,ptype};
+  let dead=0;bars.forEach(b=>{if(b.rem<PMIN)dead+=b.rem;});
+  return{bars:bars.length,charged:pieces.reduce((a,b)=>a+b,0)+dead};
 }
-
-// ── SHEET WASTE (2D) ──
 function sheetCalc(W,H,type){
-  // W,H in cm
   const s=SHEET[type],A=s.w,B=s.h;
   const need=(pw,ph,sw,sh)=>Math.ceil(pw/sw)*Math.ceil(ph/sh);
   const o1=need(W,H,A,B),o2=need(W,H,B,A);
   const sheets=Math.min(o1,o2);
-  const orient=o1<=o2?[A,B]:[B,A];
   const sa=A*B,ua=W*H,ta=sheets*sa,wa=ta-ua;
-  const rW=orient[0]*Math.ceil(W/orient[0])-W;
-  const rH=orient[1]*Math.ceil(H/orient[1])-H;
-  return{sheets,sheetArea:sa,usedArea:ua,totalArea:ta,wasteArea:wa,
-    wastePct:wa/ta*100,useful:(rW>=30||rH>=30)};
+  const orient=o1<=o2?[A,B]:[B,A];
+  const rW=orient[0]*Math.ceil(W/orient[0])-W,rH=orient[1]*Math.ceil(H/orient[1])-H;
+  return{sheets,totalArea:ta,wasteArea:wa,wastePct:wa/ta*100,useful:(rW>=30||rH>=30)};
 }
-
-// ── LED LAYOUT (mm internally, all measurements precise) ──
-// Returns strips with exact positions in mm, then we convert to px for SVG
 function ledLayout(Wcm,Hcm){
-  const W=Wcm*10, H=Hcm*10; // convert to mm
-  const vertical=H>W;
-  const along=vertical?H:W, across=vertical?W:H;
-  // rows
+  const W=Wcm*10,H=Hcm*10,vertical=H>W;
+  const along=vertical?H:W,across=vertical?W:H;
   const usableAcross=across-2*LED_MARGIN;
-  if(usableAcross<0) return{rows:0,segs:[],strips:0,rawConsumed:0,vertical,W,H};
+  if(usableAcross<0)return{rows:0,segs:[],stripsPerRow:0,totalStrips:0,rawConsumed:0,totalSMD:0,vertical,W,H,marginAcross:LED_MARGIN,marginAlong:LED_MARGIN};
   const rows=Math.floor(usableAcross/LED_GAP_V)+1;
-  const spanAcross=(rows-1)*LED_GAP_V;
-  const marginAcross=(across-spanAcross)/2;
-  // segments along (cut at multiples of 79.16mm)
-  const usableAlong=along-2*LED_MARGIN;
-  let rem=usableAlong; const segs=[];
+  const marginAcross=(across-(rows-1)*LED_GAP_V)/2;
+  let rem=along-2*LED_MARGIN;const segs=[];
   while(rem>0){
     if(rem>=LED_LEN){segs.push(LED_LEN);rem-=LED_LEN;if(rem>0)rem-=LED_GAP_H;}
-    else{
-      const n=Math.floor(rem/LED_CUT);
-      if(n<1) break;
-      segs.push(n*LED_CUT); rem=0;
-    }
+    else{const n=Math.floor(rem/LED_CUT);if(n<1)break;segs.push(n*LED_CUT);rem=0;}
   }
   const spanAlong=segs.reduce((a,b)=>a+b,0)+(segs.length-1)*LED_GAP_H;
   const marginAlong=(along-spanAlong)/2;
   const totalStrips=rows*segs.length;
-  // raw strips consumed: each segment uses ceil(seg/950) full strips
   const rawConsumed=rows*segs.reduce((a,b)=>a+Math.ceil(b/LED_LEN),0);
-  // total SMD chips: each cut-unit (79.16mm) contains 1 SMD; count units per segment
   const totalSMD=rows*segs.reduce((a,b)=>a+Math.round(b/LED_CUT),0);
-  return{rows,segs,stripsPerRow:segs.length,totalStrips,rawConsumed,totalSMD,
-    vertical,W,H,along,across,marginAcross,marginAlong,spanAcross,spanAlong};
+  return{rows,segs,stripsPerRow:segs.length,totalStrips,rawConsumed,totalSMD,vertical,W,H,along,across,marginAcross,marginAlong};
 }
-
-// ── POWER SELECTION ──
 function powerCalc(br){
   const T=[[5,10,'pw10'],[10,16,'pw16'],[15,25,'pw25'],[20,33,'pw33']];
-  const one=b=>{for(const[mx,a,id]of T)if(b<=mx)return{amp:a,id};return null;};
-  if(br<=0) return{units:[],cost:0,label:'—'};
-  if(br<=20){const u=one(br);return{units:[u.amp],cost:+g(u.id),label:`۱× پاور ${u.amp}A`};}
+  const one=b=>{for(const[mx,a,id]of T)if(b<=mx)return{amp:a,id};};
+  if(br<=0)return{units:[],cost:0,label:'—'};
+  if(br<=20){const u=one(br);return{units:[u.amp],cost:+g(u.id),label:'۱× پاور '+u.amp+'A'};}
   let best=null;
   for(const[cap,id,amp]of[[20,'pw33',33],[15,'pw25',25]]){
     const n=Math.ceil(br/cap),cost=n*+g(id);
-    if(!best||cost<best.cost) best={n,cost,amp};
+    if(!best||cost<best.cost)best={n,cost,amp};
   }
-  return{units:Array(best.n).fill(best.amp),cost:best.cost,label:`${toFa(best.n)}× پاور ${best.amp}A`};
+  return{units:Array(best.n).fill(best.amp),cost:best.cost,label:toFa(best.n)+'× پاور '+best.amp+'A'};
 }
 
-// ── MASTER CALC ──
 function calc(){
   const W=+g('W'),H=+g('H'),type=g('back'),ptype=g('prof'),qty=+g('qty');
   const margin=+g('margin')/100,wasteTh=+g('wasteTh')/100;
-  if(W<30||H<30||W>600||H>300){alert('ابعاد خارج از محدوده مجاز است');return;}
-  const pr=profileCalc(W,H,ptype);
-  const sh=sheetCalc(W,H,type);
-  const led=ledLayout(W,H);
-  const pw=powerCalc(led.rawConsumed);
+  if(W<30||H<30||W>600||H>300){alert('ابعاد خارج از محدوده');return;}
+  const pr=profileCalc(W,H);const sh=sheetCalc(W,H,type);
+  const led=ledLayout(W,H);const pw=powerCalc(led.rawConsumed);
   const cPr=(pr.charged/PLEN)*PROF[ptype].price();
   const cSh=sh.sheets*SHEET[type].price();
   const cLed=led.rawConsumed*+g('p_led');
@@ -335,197 +356,109 @@ function calc(){
   const cLab=(W*H/10000)*+g('p_labor');
   const base=cPr+cSh+cLed+cPow+cPrt+cLab;
   let sur=0,warn='';
-  if(sh.wastePct/100>wasteTh&&!sh.useful){
-    sur+=(sh.wasteArea/sh.totalArea)*cSh*0.5;
-    warn+=`پرت ورق ${Math.round(sh.wastePct)}٪ · `;
-  }
-  if(pr.dead>PMIN){
-    sur+=(pr.dead/PLEN)*PROF[ptype].price();
-    warn+=`پرت پروفیل ${pr.dead}cm`;
-  }
+  if(sh.wastePct/100>wasteTh&&!sh.useful){sur+=(sh.wasteArea/sh.totalArea)*cSh*0.5;warn+='پرت ورق '+Math.round(sh.wastePct)+'٪  ';}
   const cost=base+sur,unit=cost*(1+margin),total=unit*qty;
-  render({W,H,type,ptype,qty,pr,sh,led,pw,cPr,cSh,cLed,cPow,cPrt,cLab,
-    base,sur,cost,unit,total,warn:warn?warn.replace(/·\s*$/,'').trim():'',margin});
+  render({W,H,type,ptype,qty,pr,sh,led,pw,cPr,cSh,cLed,cPow,cPrt,cLab,sur,cost,unit,total,warn:warn.trim(),margin});
 }
 
-// ── RENDER ──
 function render(d){
   const T=d.type==='mdf'?'MDF':'PVC ضدآب';
-  const orientTxt=d.led.vertical?'نصب عمودی':'نصب افقی';
-
-  // CUSTOMER VIEW: just final price + SMD/power info
-  let customerBlock=`
-    <div style="margin-bottom:16px">
-      <div class="price-big">${fmt(d.total)} <small>تومان</small></div>
-      <div class="hint">${d.qty>1?`قیمت واحد ${fmt(d.unit)} × ${toFa(d.qty)} عدد`:''}</div>
-    </div>
-    <div class="badges">
-      <span class="badge">ابعاد: <b>${toFa(d.W)}×${toFa(d.H)} cm</b></span>
-      <span class="badge">${orientTxt}</span>
-      <span class="badge">ماژول SMD: <b>${toFa(d.led.totalStrips)}</b> عدد</span>
-      <span class="badge">تعداد کل SMD: <b>${toFa(d.led.totalSMD)}</b> عدد</span>
-      <span class="badge">${d.pw.label}</span>
-      <span class="badge">پرت ورق: <b>${Math.round(d.sh.wastePct)}٪</b></span>
-    </div>
-    ${d.warn?`<div class="warnbox">⚠ ${d.warn}</div>`:''}
-  `;
-
-  // ADMIN VIEW: full cost breakdown table
-  let adminRows=[
-    ['پروفیل '+PROF[d.ptype].label,`${(d.pr.charged/PLEN).toFixed(2)} شاخه`,d.cPr],
-    ['زیرکار '+T,`${toFa(d.sh.sheets)} برگ`,d.cSh],
-    ['نوار SMD',`${toFa(d.led.rawConsumed)} شاخه`,d.cLed],
+  const ot=d.led.vertical?'نصب عمودی':'نصب افقی';
+  const cust=`<div style="margin-bottom:14px">
+    <div class="price-big">${fmt(d.total)} <small>تومان</small></div>
+    <div class="hint">${d.qty>1?'قیمت واحد '+fmt(d.unit)+' × '+toFa(d.qty)+' عدد':''}</div>
+  </div>
+  <div class="badges">
+    <span class="badge">ابعاد: <b>${toFa(d.W)}×${toFa(d.H)} cm</b></span>
+    <span class="badge">${ot}</span>
+    <span class="badge">ماژول SMD: <b>${toFa(d.led.totalStrips)}</b> عدد</span>
+    <span class="badge">کل SMD: <b>${toFa(d.led.totalSMD)}</b> عدد</span>
+    <span class="badge">${d.pw.label}</span>
+    <span class="badge">پرت: <b>${Math.round(d.sh.wastePct)}٪</b></span>
+  </div>${d.warn?'<div class="warnbox">⚠ '+d.warn+'</div>':''}`;
+  const rows=[
+    ['پروفیل '+PROF[d.ptype].label,(d.pr.charged/PLEN).toFixed(2)+' شاخه',d.cPr],
+    ['زیرکار '+T,toFa(d.sh.sheets)+' برگ',d.cSh],
+    ['نوار SMD',toFa(d.led.rawConsumed)+' شاخه',d.cLed],
     ['منبع تغذیه',d.pw.label,d.cPow],
-    ['چاپ تکستایل',`${(d.W*d.H/10000).toFixed(2)} m²`,d.cPrt],
-    ['دستمزد',`${(d.W*d.H/10000).toFixed(2)} m²`,d.cLab],
+    ['چاپ تکستایل',(d.W*d.H/10000).toFixed(2)+' m²',d.cPrt],
+    ['دستمزد',(d.W*d.H/10000).toFixed(2)+' m²',d.cLab],
   ];
-  if(d.sur>0) adminRows.push(['افزایش پرت','—',d.sur]);
-
-  let adminBlock=`
-    <div class="admin-section" style="margin-top:14px;border-top:1px solid var(--line);padding-top:12px">
-      <div style="font-size:11px;color:var(--mut);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">ریز قیمت مواد (ادمین)</div>
-      <table>
-        <tr><th>ردیف</th><th>مشخصات</th><th>مبلغ (تومان)</th></tr>
-        ${adminRows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td class="num">${fmt(r[2])}</td></tr>`).join('')}
-        <tr class="subtotal"><td colspan="2">قیمت تمام‌شده (بدون سود)</td><td class="num">${fmt(d.cost)}</td></tr>
-        <tr class="total"><td colspan="2">قیمت فروش (${toFa(d.margin*100)}٪ سود)</td><td class="num">${fmt(d.unit)}</td></tr>
-      </table>
-    </div>
-  `;
-
+  if(d.sur>0)rows.push(['افزایش پرت','—',d.sur]);
+  const adm=`<div class="admin-section" style="margin-top:14px;border-top:1px solid var(--line);padding-top:12px">
+    <div style="font-size:10px;color:var(--mut);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">ریز قیمت مواد</div>
+    <table><tr><th>ردیف</th><th>مشخصات</th><th>مبلغ (تومان)</th></tr>
+    ${rows.map(r=>'<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td class="num">'+fmt(r[2])+'</td></tr>').join('')}
+    <tr class="subtotal"><td colspan="2">قیمت تمام‌شده</td><td class="num">${fmt(d.cost)}</td></tr>
+    <tr class="total"><td colspan="2">قیمت فروش (${toFa(Math.round(d.margin*100))}٪ سود)</td><td class="num">${fmt(d.unit)}</td></tr>
+    </table></div>`;
   const sc=schematic(d);
-  let html=customerBlock+adminBlock+`<div class="schem"><div class="schem-scroll">${sc.svg}</div>${sc.info}</div>`;
-  document.getElementById('out').innerHTML=html;
-
-  // re-apply admin mode styling to newly rendered elements
-  if(isAdmin) document.getElementById('appWrap').classList.add('admin-mode');
+  el('out').innerHTML=cust+adm+'<div class="schem"><div class="schem-scroll">'+sc.svg+'</div>'+sc.info+'</div>';
+  if(isAdmin)el('appWrap').classList.add('admin-mode');
 }
 
-// ── SVG SCHEMATIC ──
-// SMD module: strip 950mm × 15mm, 12 SMD chips spaced 79.16mm,
-// cut lines (red) every 79.16mm. First SMD at 39.62mm from strip start.
 function schematic(d){
   const led=d.led;
-  if(led.rows===0||led.segs.length===0) return {svg:'<div class="empty">ابعاد خیلی کوچک</div>',info:''};
-
-  // canvas size in mm, scale to pixels
-  const Wmm=d.W*10, Hmm=d.H*10;
-  const PAD=45; // px padding for dim lines
-  const maxW=620, maxH=360;
-  const sc=Math.min(maxW/Wmm, maxH/Hmm);
-  const cw=Wmm*sc, ch=Hmm*sc;
-
-  // SMD geometry (all in mm)
-  const LED_CHIP_R=3.16; // radius 3.16mm (from SVG: 631.36 units / 100 = 6.31mm diameter)
-  const SMD_SPACING=79.16; // mm between SMD centers
-  const SMD_FIRST=39.62;   // mm from strip start to first SMD center
-  const LED_STRIP_H=15;    // mm
-
-  let strips_svg='';
-
+  if(!led.rows||!led.segs.length)return{svg:'<div class="empty">ابعاد خیلی کوچک</div>',info:''};
+  const PAD=46,maxW=600,maxH=340;
+  const sc=Math.min(maxW/(d.W*10),maxH/(d.H*10));
+  const cw=d.W*10*sc,ch=d.H*10*sc;
+  const SMD_R=3.16,SMD_F=39.62,SMD_SP=79.16,SH=15;
+  let strips='';
   for(let r=0;r<led.rows;r++){
-    const acrossPosMm=led.marginAcross + r*LED_GAP_V;
-    let alongStartMm=led.marginAlong;
-
-    for(let si=0;si<led.segs.length;si++){
-      const segMm=led.segs[si];
-      const nCuts=Math.round(segMm/LED_CUT); // how many LED_CUT units in this segment
-
-      // strip body
-      let sx,sy,sw,sh_px;
-      if(!led.vertical){
-        sx=(alongStartMm*sc+PAD); sy=((acrossPosMm-LED_STRIP_H/2)*sc+PAD);
-        sw=segMm*sc; sh_px=LED_STRIP_H*sc;
-      } else {
-        sx=((acrossPosMm-LED_STRIP_H/2)*sc+PAD); sy=(alongStartMm*sc+PAD);
-        sw=LED_STRIP_H*sc; sh_px=segMm*sc;
-      }
-      strips_svg+=`<rect x="${sx.toFixed(1)}" y="${sy.toFixed(1)}" width="${sw.toFixed(1)}" height="${sh_px.toFixed(1)}" fill="#2d2d2d" stroke="#555" stroke-width="0.8"/>`;
-
-      // SMD chips (yellow circles)
-      const nChips=nCuts;
-      for(let ci=0;ci<nChips;ci++){
-        const chipOffset=SMD_FIRST + ci*SMD_SPACING;
-        if(chipOffset>segMm) break;
+    const ap=led.marginAcross+r*LED_GAP_V;let as2=led.marginAlong;
+    for(const seg of led.segs){
+      const nc=Math.round(seg/LED_CUT);
+      let sx,sy,sw,sh;
+      if(!led.vertical){sx=as2*sc+PAD;sy=(ap-SH/2)*sc+PAD;sw=seg*sc;sh=SH*sc;}
+      else{sx=(ap-SH/2)*sc+PAD;sy=as2*sc+PAD;sw=SH*sc;sh=seg*sc;}
+      strips+='<rect x="'+sx.toFixed(1)+'" y="'+sy.toFixed(1)+'" width="'+sw.toFixed(1)+'" height="'+sh.toFixed(1)+'" fill="#2d2d2d" stroke="#555" stroke-width="0.8"/>';
+      for(let ci=0;ci<nc;ci++){
+        const off=SMD_F+ci*SMD_SP;if(off>seg)break;
         let cx,cy;
-        if(!led.vertical){
-          cx=(alongStartMm+chipOffset)*sc+PAD;
-          cy=acrossPosMm*sc+PAD;
-        } else {
-          cx=acrossPosMm*sc+PAD;
-          cy=(alongStartMm+chipOffset)*sc+PAD;
-        }
-        strips_svg+=`<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${(LED_CHIP_R*sc).toFixed(1)}" fill="var(--led)" stroke="#aaa" stroke-width="0.5" opacity="0.9"/>`;
+        if(!led.vertical){cx=(as2+off)*sc+PAD;cy=ap*sc+PAD;}
+        else{cx=ap*sc+PAD;cy=(as2+off)*sc+PAD;}
+        strips+='<circle cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" r="'+(SMD_R*sc).toFixed(1)+'" fill="var(--led)" stroke="#aaa" stroke-width="0.5" opacity="0.9"/>';
       }
-
-      // Cut lines (red) between SMD chips, every 79.16mm
-      for(let ci=1;ci<nCuts;ci++){
-        const cutOffset=ci*LED_CUT;
-        if(cutOffset>=segMm) break;
-        let lx1,ly1,lx2,ly2;
-        const halfH=(LED_STRIP_H/2+1)*sc;
-        if(!led.vertical){
-          const cx=(alongStartMm+cutOffset)*sc+PAD;
-          const midY=acrossPosMm*sc+PAD;
-          lx1=cx; ly1=midY-halfH; lx2=cx; ly2=midY+halfH;
-        } else {
-          const cy=(alongStartMm+cutOffset)*sc+PAD;
-          const midX=acrossPosMm*sc+PAD;
-          lx1=midX-halfH; ly1=cy; lx2=midX+halfH; ly2=cy;
-        }
-        strips_svg+=`<line x1="${lx1.toFixed(1)}" y1="${ly1.toFixed(1)}" x2="${lx2.toFixed(1)}" y2="${ly2.toFixed(1)}" stroke="#ff3a3a" stroke-width="1.2"/>`;
+      for(let ci=1;ci<nc;ci++){
+        const off=ci*LED_CUT;if(off>=seg)break;
+        const hh=(SH/2+1)*sc;let lx1,ly1,lx2,ly2;
+        if(!led.vertical){const cx=(as2+off)*sc+PAD,my=ap*sc+PAD;lx1=cx;ly1=my-hh;lx2=cx;ly2=my+hh;}
+        else{const cy=(as2+off)*sc+PAD,mx=ap*sc+PAD;lx1=mx-hh;ly1=cy;lx2=mx+hh;ly2=cy;}
+        strips+='<line x1="'+lx1.toFixed(1)+'" y1="'+ly1.toFixed(1)+'" x2="'+lx2.toFixed(1)+'" y2="'+ly2.toFixed(1)+'" stroke="#ff3a3a" stroke-width="1.2"/>';
       }
-
-      alongStartMm+=segMm+LED_GAP_H;
+      as2+=seg+LED_GAP_H;
     }
   }
-
-  // POWER boxes (right side)
-  let pwr_svg='';
-  const units=d.pw.units;
-  const pwH=22,pwG=7,pwW=62;
-  const totalPwH=units.length*pwH+(units.length-1)*pwG;
-  let pwY=PAD+(ch-totalPwH)/2;
-  const pwX=PAD+cw+14;
+  const units=d.pw.units,pwH=22,pwG=7,pwW=62;
+  const tph=units.length*pwH+(units.length-1)*pwG;
+  let pwY=PAD+(ch-tph)/2,pwX=PAD+cw+14,pwr='';
   units.forEach((amp,i)=>{
-    const y=pwY+i*(pwH+pwG);
-    const cy=y+pwH/2;
-    pwr_svg+=`<rect x="${pwX}" y="${y.toFixed(1)}" width="${pwW}" height="${pwH}" rx="4" fill="#1e0e14" stroke="var(--pwr)" stroke-width="1.5"/>`;
-    pwr_svg+=`<text x="${(pwX+pwW/2).toFixed(1)}" y="${(cy+4.5).toFixed(1)}" fill="var(--pwr)" font-size="10" text-anchor="middle">پاور ${amp}A</text>`;
-    pwr_svg+=`<line x1="${(PAD+cw).toFixed(1)}" y1="${cy.toFixed(1)}" x2="${pwX.toFixed(1)}" y2="${cy.toFixed(1)}" stroke="var(--pwr)" stroke-width="0.8" stroke-dasharray="3 2"/>`;
+    const y=pwY+i*(pwH+pwG),cy=y+pwH/2;
+    pwr+='<rect x="'+pwX+'" y="'+y.toFixed(1)+'" width="'+pwW+'" height="'+pwH+'" rx="4" fill="#1e0e14" stroke="var(--pwr)" stroke-width="1.5"/>';
+    pwr+='<text x="'+(pwX+pwW/2).toFixed(1)+'" y="'+(cy+4.5).toFixed(1)+'" fill="var(--pwr)" font-size="10" text-anchor="middle">پاور '+amp+'A</text>';
+    pwr+='<line x1="'+(PAD+cw).toFixed(1)+'" y1="'+cy.toFixed(1)+'" x2="'+pwX+'" y2="'+cy.toFixed(1)+'" stroke="var(--pwr)" stroke-width="0.8" stroke-dasharray="3 2"/>';
   });
-
-  // Dimension lines
-  const dim=`
-    <line x1="${PAD}" y1="${PAD-18}" x2="${PAD+cw}" y2="${PAD-18}" stroke="var(--mut)" stroke-width="0.8"/>
-    <line x1="${PAD}" y1="${PAD-22}" x2="${PAD}" y2="${PAD-14}" stroke="var(--mut)" stroke-width="0.8"/>
-    <line x1="${PAD+cw}" y1="${PAD-22}" x2="${PAD+cw}" y2="${PAD-14}" stroke="var(--mut)" stroke-width="0.8"/>
-    <text x="${(PAD+cw/2).toFixed(1)}" y="${PAD-24}" fill="var(--ink)" font-size="11" text-anchor="middle">${d.W} cm</text>
-    <line x1="${PAD-18}" y1="${PAD}" x2="${PAD-18}" y2="${PAD+ch}" stroke="var(--mut)" stroke-width="0.8"/>
-    <line x1="${PAD-22}" y1="${PAD}" x2="${PAD-14}" y2="${PAD}" stroke="var(--mut)" stroke-width="0.8"/>
-    <line x1="${PAD-22}" y1="${PAD+ch}" x2="${PAD-14}" y2="${PAD+ch}" stroke="var(--mut)" stroke-width="0.8"/>
-    <text x="${PAD-26}" y="${(PAD+ch/2).toFixed(1)}" fill="var(--ink)" font-size="11" text-anchor="middle" transform="rotate(-90 ${PAD-26} ${(PAD+ch/2).toFixed(1)})">${d.H} cm</text>
-  `;
-
-  const orientTxt=led.vertical?'نصب عمودی':'نصب افقی';
-  // info text goes in HTML (not SVG) to avoid overflow issues
-  const infoHtml=`<div class="schem-info">ماژول SMD: ${toFa(led.totalStrips)} عدد &nbsp;·&nbsp; تعداد کل SMD: ${toFa(led.totalSMD)} عدد &nbsp;·&nbsp; ${orientTxt}</div>`;
-
-  const SVG_W=cw+PAD*2+80;
-  const SVG_H=ch+PAD*2+6; // tight — no bottom text in SVG
-
-  return {
-    svg:`<svg class="schema" viewBox="0 0 ${SVG_W.toFixed(0)} ${SVG_H.toFixed(0)}" xmlns="http://www.w3.org/2000/svg">
-    <rect x="${PAD}" y="${PAD}" width="${cw.toFixed(1)}" height="${ch.toFixed(1)}" fill="#0b0f17" stroke="var(--acc2)" stroke-width="1.5"/>
-    <rect x="${PAD+4}" y="${PAD+4}" width="${(cw-8).toFixed(1)}" height="${(ch-8).toFixed(1)}" fill="none" stroke="#1a2535" stroke-width="0.8" stroke-dasharray="4 3"/>
-    ${strips_svg}${pwr_svg}${dim}
-  </svg>`,
-    info:infoHtml
+  const dim='<line x1="'+PAD+'" y1="'+(PAD-18)+'" x2="'+(PAD+cw)+'" y2="'+(PAD-18)+'" stroke="var(--mut)" stroke-width="0.8"/>'
+    +'<line x1="'+PAD+'" y1="'+(PAD-22)+'" x2="'+PAD+'" y2="'+(PAD-14)+'" stroke="var(--mut)" stroke-width="0.8"/>'
+    +'<line x1="'+(PAD+cw)+'" y1="'+(PAD-22)+'" x2="'+(PAD+cw)+'" y2="'+(PAD-14)+'" stroke="var(--mut)" stroke-width="0.8"/>'
+    +'<text x="'+(PAD+cw/2).toFixed(1)+'" y="'+(PAD-24)+'" fill="var(--ink)" font-size="11" text-anchor="middle">'+d.W+' cm</text>'
+    +'<line x1="'+(PAD-18)+'" y1="'+PAD+'" x2="'+(PAD-18)+'" y2="'+(PAD+ch)+'" stroke="var(--mut)" stroke-width="0.8"/>'
+    +'<line x1="'+(PAD-22)+'" y1="'+PAD+'" x2="'+(PAD-14)+'" y2="'+PAD+'" stroke="var(--mut)" stroke-width="0.8"/>'
+    +'<line x1="'+(PAD-22)+'" y1="'+(PAD+ch)+'" x2="'+(PAD-14)+'" y2="'+(PAD+ch)+'" stroke="var(--mut)" stroke-width="0.8"/>'
+    +'<text x="'+(PAD-26)+'" y="'+(PAD+ch/2).toFixed(1)+'" fill="var(--ink)" font-size="11" text-anchor="middle" transform="rotate(-90 '+(PAD-26)+' '+(PAD+ch/2).toFixed(1)+')">'+d.H+' cm</text>';
+  const SVG_W=(cw+PAD*2+80).toFixed(0),SVG_H=(ch+PAD*2+6).toFixed(0);
+  const ot=led.vertical?'نصب عمودی':'نصب افقی';
+  return{
+    svg:'<svg class="schema" viewBox="0 0 '+SVG_W+' '+SVG_H+'" xmlns="http://www.w3.org/2000/svg">'
+      +'<rect x="'+PAD+'" y="'+PAD+'" width="'+cw.toFixed(1)+'" height="'+ch.toFixed(1)+'" fill="#0b0f17" stroke="var(--acc2)" stroke-width="1.5"/>'
+      +'<rect x="'+(PAD+4)+'" y="'+(PAD+4)+'" width="'+(cw-8).toFixed(1)+'" height="'+(ch-8).toFixed(1)+'" fill="none" stroke="#1a2535" stroke-width="0.8" stroke-dasharray="4 3"/>'
+      +strips+pwr+dim+'</svg>',
+    info:'<div class="schem-info">ماژول SMD: '+toFa(led.totalStrips)+' عدد &nbsp;·&nbsp; کل SMD: '+toFa(led.totalSMD)+' عدد &nbsp;·&nbsp; '+ot+'</div>'
   };
 }
 
-// auto-calc on load
-calc();
+initSettings().then(()=>calc());
 </script>
 </body>
 </html>
