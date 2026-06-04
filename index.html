@@ -1,551 +1,3 @@
-
-Claude finished the response
-
-برای محاسبه قیمت تمام شده یک محصول متغییر که بشه به مشتری اعلام کرد قیمت نهایی رو، نیاز به یه سیستم محاسبه اتوماتیک دارم. این محصول لایت باکس فریم لس آلومینیومی هست که برای تبلیغات استفاده میشه و از دیواره هایی با پروفیل آلومینیوم تشکیل شده که فرم مستطیل تشکیل میدن و پشت کار از جنس ام دی اف یا پی وی
-
-pasted
-
-1 Jun
-I'll design a complete pricing system for your aluminum frameless lightbox. Let me first check the design skill, then build a working calculator.
-
-
-Reading frontend design skill before building the calculator UI
-Reading frontend design skill before building the calculator UI
-Now let me work through the calculation logic, especially the two tricky parts: profile waste and sheet (2D) waste.
-
-
-Working through the LED layout and waste calculation logic to validate the algorithm before building the UI
-Working through the LED layout and waste calculation logic to validate the algorithm before building the UI
-The logic works. Now I'll build the complete system as a self-contained HTML file with the calculator, pricing engine, waste logic, power-supply selection, schematic drawing, and a quote (پیش‌فاکتور). It'll have an editable settings panel for raw-material prices so it's ready to wire into a chatbot later.
-
-Let me build the full application.
-
-
-Created a file, read a file
-Created a file, read a file
-سیستم آماده است. یک فایل HTML مستقل که هم آنلاین (روی هر هاست) و هم آفلاین (روی مرورگر) کار می‌کند.
-
-منطق محاسبه که پیاده شد:
-
-پرت پروفیل (یک‌بعدی): چهار ضلع کار (۲ طول + ۲ عرض) با الگوریتم bin-packing داخل شاخه‌های ۶۰۰ سانتی چیده می‌شوند. ته‌مانده‌ی هر شاخه اگر زیر ۴۰ سانت باشد «پرت دورریز» محسوب و به قیمت اضافه می‌شود؛ اگر بالای ۴۰ سانت باشد «قابل استفاده» است و هزینه‌اش از مشتری گرفته نمی‌شود.
-
-پرت ورق (دوبعدی): راه‌حل دو پارامتری که خواسته بودید — ورق در هر دو جهت چیده می‌شود و کم‌مصرف‌ترین حالت انتخاب می‌شود. ته‌مانده فقط وقتی «به‌دردبخور» است که حداقل یک بعدش ≥ ۳۰ سانت باشد (یعنی بشود سفارش کوچک بعدی را از آن درآورد). اگر پرت از آستانه (پیش‌فرض ۲۰٪) بگذرد و ته‌مانده غیرقابل‌استفاده باشد، نصف ارزش پرت به قیمت اضافه می‌شود.
-
-چیدمان LED: ردیف‌ها با فاصله عمودی ۱۳ سانت و حاشیه ۷ سانت، نوارها افقی با طول خام ۹۵ و برش روی مضارب ۸ سانت، فاصله افقی ۷ سانت. تعداد «شاخه مصرفی» مبنای انتخاب پاور است (زیر ۵ → ۱۰A، تا ۱۰ → ۱۶A، تا ۱۵ → ۲۵A، تا ۲۰ → ۳۳A، بالای ۲۰ → چند پاور هم‌توان).
-
-نقشه شماتیک به‌صورت SVG مهندسی با اندازه‌گذاری طول و عرض و نمایش تک‌تک ماژول‌ها رسم می‌شود.
-
-برای اتصال بعدی به چت‌بات: تابع calc() تمام خروجی‌ها (قیمت، تعداد ماژول، پاور، پرت، داده‌های شماتیک) را در یک آبجکت تولید می‌کند. کافی است این منطق را به یک endpoint تبدیل کنید که ابعاد را ورودی بگیرد و JSON پیش‌فاکتور + SVG را برگرداند.
-
-دو نکته که باید تأیید کنید: قیمت‌های پیش‌فرض مواد خام و نرخ سود را با اعداد واقعی خودتان در بخش «تنظیمات» جایگزین کنید، و فرمول جریمه‌ی پرت ورق (نصف ارزش) را اگر سیاست قیمت‌گذاری‌تان متفاوت است بگویید تا تنظیمش کنم.
-
-
-Lightbox calculator
-Code · HTML 
-فراموش کردم بگم که ما دو مدل پروفیل داریم یکی 9 سانت ارتفاع و یکی 6 سانت که هر دوی اینها طول شاخه های 600 سانتی متری دارن و قیمت هاشون فرق میکنه. و آخرین نکته اگه ارتفاع ورق عددش بیشتر از طول یا عرض ورق بود اون وقت شاخه های ال ای دی باید به صورت عمودی نصب بشن.  توی نقشه شماتیک پاور رو هم یجا نشون بده با ذکر آمپرش و اگه تعداد بیشتر مصرف شد به همون تعداد نشون بده. و زیر نقشه تعداد ال  ای دی مصرفی رو هم بنویس و نوع نصب رو هم مشخص کن . تعداد و نوع نصب وسط پایین جانمایی بشه. و آخرین نکتعه اینکه بعد از مشخص شدن تعداد ال ای دی ها میخوام کل اونها رو یه صورت وسط چین در بیاری یعنی فاصله از لبه های پروفیل قرینه باشه اگه مثلا یه سمت 8 سانته روبروش 6 سانت مونده این رو تقسیم کنی و هر دو طرف بشه 7 سانت که وسط چین بشه. تیتر های بالای صفحه رو هم وسط چین کن الان به صورت راست چین هست دو تا خط نوشته بالا
-
-2 Jun
-I'll add the two profile types, vertical LED installation logic, power supply in the schematic, centered LED layout, the info line under the diagram, and center the header. Let me update the file.
-
-
-Reviewing current file structure before editing
-Reviewing current file structure before editing
-Now let me make all the edits. First, center the header:
-
-
-Edited 2 files
-Edited 2 files
-Now add the profile type selector and second profile price in the inputs:
-
-
-Edited 3 files
-Edited 3 files
-Let me view the current settings section.
-
-
-View current settings block
-View current settings block
-It looks like the file already has the profile changes — it seems a prior edit landed differently than I expected. The earlier str_replace for the profile selector actually created an id="profType" block, but here I see id="prof" with values "9"/"6" and prices p_prof9/p_prof6. Let me view the full input section to reconcile the actual state.
-
-
-View full input card
-View full input card
-The file got into a tangled state with duplicated profile selectors and lines above 82. Rather than patch piecemeal, I'll rewrite the whole file cleanly with all requested features. Let me view the top to understand the full mess first.
-
-
-View top of body
-View top of body
-The file is corrupted with three duplicate profile selectors. I'll rewrite the whole file cleanly with everything correct.
-
-
-Rewriting the full file cleanly with two profiles, vertical LED logic, power in schematic, centered LEDs, bottom-center info, centered header
-Rewriting the full file cleanly with two profiles, vertical LED logic, power in schematic, centered LEDs, bottom-center info, centered header
-Let me verify the LED centering and orientation logic with a quick sanity test before presenting.
-
-
-Verifying centering and vertical orientation logic
-Verifying centering and vertical orientation logic
-Centering works (margins are now symmetric and ≥7cm), vertical orientation triggers correctly when H>W. Presenting the updated file.
-
-
-Presented file
-Presented file
-همه موارد اعمال شد:
-
-دو مدل پروفیل (۶ و ۹ سانت) با قیمت‌های جداگانه به ورودی و تنظیمات اضافه شد؛ کاربر نوع را انتخاب می‌کند و قیمت پروفیل بر همان اساس حساب می‌شود.
-
-نصب عمودی LED: حالا اگر ارتفاع کار از طول/عرضش بیشتر باشد (H > W)، نوارها به‌صورت عمودی نصب می‌شوند و در شماتیک هم عمودی رسم می‌شوند. در غیر این صورت افقی.
-
-وسط‌چین کردن LEDها: حاشیه از هر دو طرف قرینه می‌شود. اگر یک طرف ۸ و طرف مقابل ۶ سانت می‌ماند، حالا تقسیم می‌شود و هر دو طرف ۷ سانت — هم در راستای طولی و هم عرضی.
-
-پاور در شماتیک: سمت چپ کار، خارج از فریم، به‌صورت یک یا چند جعبه (به تعداد پاور مصرفی) با ذکر آمپر و خط اتصال به فریم نمایش داده می‌شود.
-
-زیر نقشه، وسط‌چین: «تعداد ماژول LED: X عدد · نصب افقی/عمودی».
-
-تیترهای بالای صفحه وسط‌چین شدند.
-
-دو نکته برای تأیید: قاعده‌ای که گفتید «اگر ارتفاع ورق بیشتر از طول/عرض بود LED عمودی شود» را من بر اساس خود محصول (ارتفاع کار بزرگ‌تر از عرض کار) پیاده کردم، نه ابعاد ورق خام زیرکار — چون منطقی‌تر است نوار روی بُعد بلندتر کار بخوابد. اگر منظورتان واقعاً مقایسه با ابعاد ورق خام بود بگویید تا تغییر دهم. ضمناً قیمت‌های پیش‌فرض مواد را با اعداد واقعی خودتان جایگزین کنید.
-
-
-Lightbox calculator
-Code · HTML 
-این صفحه رو میخوام روی یه سرور بارگذاری کنم که هم مشتری بتونه ببینه هم خود صاحب کسب و کار اما میخوام در مرحله اول که باز میشهه پیش فرض مشتری باشه و دسترسی به تنظیمات قیمت و مواد اولیه نداشته باشه. همچنین ریز قیمت مواد مصرفی هم نبینه و فقط قیمت تمام شده رو بهش نشون بده.  و اینه چه تعداد شاخه ال ای دی و پاور نیاز داره. بالای صفحه جایی باشه برای ورود کاربر ادمین که صاحب کسب و کار هست و وقتی اسم و رمزشو میده پنل تمام قابلیت هاش باز بشه براش.
-در مورد بخش تصویری که اس ام دی مشخص میکنه میخوام بر اساس فایلی که برات آپلود کردم به تصیویر بکشی ماژول ها رو و در مورد خط برش های ماژول هم با قرمز مشخص شده و فاصله های دقیق برش 79.16 میلیمتر هست که توی محاسبات قبلا 80 میلیمتر بود و باید اصلاحش کنی
-
-16:21
-فایل آپلود شده رو باید ببینم.
-
-
-Check uploaded files
-Check uploaded files
-فایلی در سیستم نیست — به نظر می‌رسد آپلود نشده. لطفاً فایل را دوباره ارسال کنید تا بتوانم ماژول LED را از روی آن رسم کنم.
-
-در همین حین، باقی موارد را (پنل ادمین، مخفی‌کردن قیمت‌ها از مشتری، تصحیح ۷۹.۱۶mm) آماده می‌کنم.
-
-
-LED Module.svg
-svg
-
-16:22
-
-Reading the uploaded LED module SVG
-Reading the uploaded LED module SVG
-عالی. ساختار SVG کاملاً واضح است:
-
-نوار خاکستری ۹۵۰۰۰ × ۱۵۰۰ (= ۹۵cm × ۱.۵cm به واحد CorelDRAW)
-۱۲ دایره سفید = LED chips با فاصله ۷۹۱۶ واحد از هم (= ۷.۹۱۶mm)
-۱۱ خط قرمز = خطوط برش هر ۷۹۱۶ واحد
-حالا فایل کامل را می‌سازم با تمام قابلیت‌ها:
-
-
-Ran 2 commands, read a file
-Ran 2 commands, read a file
-همه موارد پیاده‌سازی شد. خلاصه تغییرات:
-
-سیستم ورود ادمین در بالای صفحه یک بار ورود با نام کاربری و رمز عبور وجود دارد. نام کاربری پیش‌فرض admin است و رمز پیش‌فرض admin123 — هر دو را می‌توانید در پنل ادمین تغییر دهید. وقتی ادمین وارد می‌شود، پنل قیمت مواد خام و ریز هزینه‌ها ظاهر می‌شود. مشتری فقط قیمت نهایی، تعداد ماژول LED و نوع پاور را می‌بیند.
-
-نقشه شماتیک جدید ساختار دقیق ماژول LED از فایل آپلودی استخراج شد: نوار خاکستری، چیپ‌های زرد با فاصله دقیق ۷۹.۱۶mm، خطوط برش قرمز بین هر دو چیپ. فاصله اول چیپ از ابتدای نوار ۳۹.۶۲mm است که دقیقاً از SVG اصلی گرفته شد.
-
-تصحیح برش مقدار LED_CUT از ۸۰mm به ۷۹.۱۶mm اصلاح شد و همه محاسبات طول و تعداد بر این اساس به‌روز شدند.
-
-نکته امنیتی برای deploy روی سرور: این سیستم client-side است و رمز ادمین در HTML ذخیره می‌شود. اگر امنیت بیشتری نیاز دارید (مثلاً رمز روی سرور باشد)، باید یک backend ساده اضافه کنیم. بگویید تا راهنمایی کنم.
-
-
-Lightbox calculator
-Code · HTML 
-اون توضیح خط برش و Led رو بردار و کلا همه جا به جای LED بنویس SMD و در نهایت تعداد کل smd رو هم بنویس یعنی مثلا هر شاخه که 12 تا داره رو در نظر بگیر و جمع کل ازش در بیار. و فاصله نصب ماژول ها  از لبه های پروفیل رو هم به حداقل عدد 6 تغییر بده
-
-16:31
-
-Viewed 3 files
-Viewed 3 files
-حالا همه تغییرات را یک‌جا اعمال می‌کنم:
-
-
-Edited 7 files
-Edited 7 files
-حالا label نوار SMD در پنل ادمین را هم عوض کنم:
-
-
-Edited 2 files, viewed a file, read a file
-Edited 2 files, viewed a file, read a file
-همه تغییرات اعمال شد:
-
-همه جا LED → SMD شد (برچسب‌ها، جدول ادمین، نقشه، توضیح زیر شماتیک)
-فاصله از لبه پروفیل از ۷ به ۶ سانت کاهش یافت (LED_MARGIN = 60mm)
-تعداد کل SMD حساب می‌شود: هر واحد برش ۷۹.۱۶mm = یک چیپ SMD؛ کل تمام ردیف‌ها و سگمنت‌ها جمع می‌شود و هم در badge بالا و هم در متن زیر نقشه نمایش داده می‌شود
-لژند (توضیح خط برش) از نقشه حذف شد
-متن زیر نقشه الان می‌گوید: ماژول SMD: X عدد · تعداد کل SMD: Y عدد · نصب افقی/عمودی
-
-Lightbox calculator
-Code · HTML 
-این فایل رو روی گیت هاب خودم چجوری بذارم که بشه لینکشو داد به همه
-
-16:38
-چند تا روش داری، ساده‌ترین و رایگان‌ترین GitHub Pages است:
-
-مرحله ۱ — ریپو بساز
-
-به github.com برو، وارد حسابت شو، بالا راست دکمه + → New repository را بزن.
-
-اسم ریپو را بگذار مثلاً lightbox-calculator، گزینه Public را انتخاب کن و Create repository بزن.
-
-مرحله ۲ — فایل آپلود کن
-
-داخل ریپو روی Add file → Upload files کلیک کن، فایل lightbox_calculator.html را drag کن داخلش، ولی قبل از آپلود اسمش را به index.html تغییر بده — چون GitHub Pages فایل پیش‌فرض را index.html می‌خواند.
-
-بعد پایین صفحه Commit changes را بزن.
-
-مرحله ۳ — GitHub Pages فعال کن
-
-در ریپو برو به Settings → از منوی چپ Pages را بزن.
-
-زیر Branch گزینه main را انتخاب کن، فولدر را روی / (root) بگذار و Save بزن.
-
-مرحله ۴ — لینک بگیر
-
-بعد از چند ثانیه تا یک دقیقه، همان صفحه Pages یک لینک به شکل زیر نشان می‌دهد:
-
-https://your-username.github.io/lightbox-calculator/
-همین لینک را به مشتری بده. هر بار هم که فایل را آپدیت کنی، سایت خودکار به‌روز می‌شود.
-
-نکته امنیتی مهم
-
-چون رمز ادمین (admin123) داخل کد HTML هست و ریپو Public است، هر کسی می‌تواند آن را ببیند. دو راه‌حل داری:
-
-۱. ریپو را Private کن — رایگان است ولی GitHub Pages برای ریپوهای private نیاز به پلن پولی دارد.
-
-۲. رمز را هش کن — قبل از آپلود، رمز واقعی‌ات را به صورت هش SHA-256 در کد ذخیره کن. اگر بخواهی این کار را انجام دهم، بگو تا فایل را آپدیت کنم.
-
-طراحی رو یجوری ریسپانسیو کن که روی موبایل هم راحت خونده بشه و اینکه نوشته های پایین نقشه از کادر بیرون نزنه
-
-16:41
-
-Viewed 2 files
-Viewed 2 files
-حالا همه چیز را می‌بینم. مشکلات اصلی:
-
-متن زیر نقشه (info) از viewBox بیرون می‌زند چون SVG_H فضای کافی نمی‌گذارد
-CSS موبایل ناقص است — header، badges، جدول و padding باید بهینه شوند
-متن زیر نقشه بهتر است به HTML منتقل شود نه SVG تا مشکل overflow نداشته باشد
-
-Complete responsive CSS overhaul - mobile-first, fix all breakpoints
-Complete responsive CSS overhaul - mobile-first, fix all breakpoints
-حالا متن زیر نقشه را از SVG بیرون بیاورم و به HTML منتقل کنم، و SVG_H را هم تصحیح کنم:
-
-
-Move info text out of SVG into HTML div, fix SVG_H to not need bottom space
-Move info text out of SVG into HTML div, fix SVG_H to not need bottom space
-حالا باید SVG_W و SVG_H را از محاسبه اولیه هم پاک کنم چون الان داخل schematic تعریف می‌شوند:
-
-
-Remove old SVG_W/SVG_H definition line that's now redundant
-Remove old SVG_W/SVG_H definition line that's now redundant
-حالا SVG را روی موبایل scrollable و خوانا می‌کنم — overflow:hidden را به overflow-x:auto تبدیل کنم و یک wrapper اضافه کنم:
-
-
-Make schem scrollable on mobile instead of hidden overflow
-Make schem scrollable on mobile instead of hidden overflow
-حالا در render() نقشه را داخل schem-scroll بگذارم:
-
-
-Wrap schematic SVG in scroll div
-Wrap schematic SVG in scroll div
-یک بررسی نهایی برای اطمینان از اینکه infoHtml خارج از schem-scroll قرار گیرد (داخل schematic function برمی‌گردد، پس باید نقشه را از info جدا کنم):
-
-
-Edited 2 files
-Edited 2 files
-حالا هم حالت empty را در schematic اصلاح کنم:
-
-
-Fix empty return in schematic to match new object return format
-Fix empty return in schematic to match new object return format
-یک چک نهایی روی خطوط کلیدی:
-
-
-Verify all schematic references are consistent
-Verify all schematic references are consistent
-همه چیز منسجم است.
-
-
-Presented file
-Presented file
-تغییرات اعمال شد:
-
-مشکل متن بیرون از کادر — حل شد متن «ماژول SMD / تعداد کل SMD / نوع نصب» از داخل SVG خارج شد و به یک <div> مستقل زیر نقشه تبدیل شد. دیگر هیچ‌وقت از کادر بیرون نمی‌زند.
-
-ریسپانسیو موبایل — بازنویسی کامل
-
-زیر ۸۰۰px: دو ستون به یک ستون تبدیل می‌شود
-زیر ۵۰۰px: هدر عمودی می‌شود، فیلدهای ورود نام‌کاربری و رمز کنار هم و کشیده، فونت قیمت کوچک‌تر، badge ها فشرده‌تر، جدول خواناتر
-دکمه محاسبه touch-action:manipulation دارد (بدون تأخیر روی iOS)
-نقشه داخل یک div با overflow-x:auto است — اگر صفحه خیلی باریک باشد، نقشه scroll می‌شود نه اینکه بریده شود
-
-Lightbox calculator
-Code · HTML 
-رو گیت هاب گذاشتم چجوری لینکشو بدست بیارم که مستقیم باز بشه ؟
-
-16:47
-برو به ریپوی خودت روی GitHub، بعد:
-
-Settings → از منوی چپ Pages را بزن
-
-اگر قبلاً Branch را روی main تنظیم کرده باشی، همان‌جا یک بنر سبز می‌بینی:
-
-Your site is live at https://your-username.github.io/lightbox-calculator/
-
-همان لینک را کپی کن و به مشتری بده — مستقیم باز می‌شود.
-
-اگر Pages را هنوز فعال نکردی:
-
-۱. داخل ریپو → Settings ۲. منوی چپ → Pages ۳. زیر Branch گزینه main را انتخاب کن، فولدر / (root) باشد ۴. Save بزن ۵. یک دقیقه صبر کن، صفحه را refresh کن — لینک ظاهر می‌شود
-
-اگر اسم فایلت را index.html گذاشته باشی لینک بدون نام فایل کار می‌کند. اگر اسم دیگری داری مثلاً lightbox_calculator.html باید آخر لینک اسم فایل را هم بنویسی:
-
-https://your-username.github.io/lightbox-calculator/lightbox_calculator.html
-چیکار کنم مقادیری که برای مواد اولیه تنظیم میکنم به صورت دائم زخیره بشه. چون الان این اتفاق نمیفته
-
-16:52
-چون فایل HTML کاملاً client-side است، بهترین راه localStorage است — مقادیر روی همان مرورگر ادمین ذخیره می‌شوند و بعد از بستن و باز کردن مرورگر هم باقی می‌مانند.
-
-
-Viewed 3 files
-Viewed 3 files
-حالا دو تغییر می‌دهم: دکمه ذخیره به پنل ادمین اضافه می‌کنم و تابع save/load به اسکریپت:
-
-
-Edited 2 files
-Edited 2 files
-حالا توابع save/load را به اسکریپت اضافه می‌کنم:
-
-
-Add localStorage save/load functions and auto-load on page start
-Add localStorage save/load functions and auto-load on page start
-حالا loadSettings() را قبل از calc() در انتهای اسکریپت صدا بزنم:
-
-
-Call loadSettings before calc on page load
-Call loadSettings before calc on page load
-یک چک سریع:
-
-
-Ran a command, read a file
-Ran a command, read a file
-آماده است. نحوه کار:
-
-ادمین وارد می‌شود، قیمت‌ها را تغییر می‌دهد، دکمه 💾 ذخیره تنظیمات را می‌زند — همان لحظه پیام «✓ ذخیره شد» نمایش داده می‌شود. از این به بعد هر بار که صفحه باز می‌شود (حتی بعد از بستن مرورگر) مقادیر ذخیره‌شده به‌صورت خودکار بارگذاری می‌شوند.
-
-یک نکته مهم: localStorage به همان مرورگر و همان دامنه وابسته است. یعنی اگر ادمین روی گوشی دیگری یا مرورگر دیگری باز کند، مقادیر پیش‌فرض نمایش داده می‌شود. اگر می‌خواهید تنظیمات روی همه دستگاه‌ها یکسان باشد، باید یک backend ساده (مثلاً یک فایل JSON روی سرور) اضافه کنیم — بگویید تا راهنمایی کنم.
-
-
-Lightbox calculator
-Code · HTML 
-Namvar.png
-آره میخوام روی همه دستگاهها یکسان باشه و یه لوگو هم میفرستم بالای این صفحه بذارش که مجموعه با اسم و لوگو باشه. سایز لوگو رو خودت به اندازه مناسب در نظر بگیر که خیلی بزرگ نباشه و تناسب داشته باشه
-
-21:57
-برای ذخیره روی همه دستگاه‌ها نیاز به یک backend ساده داریم. بهترین گزینه رایگان برای GitHub Pages اینه که از JSONBin.io استفاده کنیم — یه سرویس رایگان که داده‌ها رو به صورت JSON ذخیره می‌کنه و API داره.
-
-
-Ran 2 commands, viewed a file
-Ran 2 commands, viewed a file
-حجم لوگو کمه، مستقیم embed می‌کنم. حالا فایل کامل را با لوگو + JSONBin sync می‌سازم:
-
-
-Ran 4 commands, created a file, read a file
-Ran 4 commands, created a file, read a file
-آماده است. لوگوی نامور در هدر جا گرفت و sync ابری هم اضافه شد.
-
-راه‌اندازی JSONBin (یک بار، ۵ دقیقه):
-
-۱. به jsonbin.io برو و ثبت‌نام رایگان کن
-
-۲. از داشبورد یک Bin جدید بساز — محتوای اولیه‌اش مهم نیست، مثلاً {}
-
-۳. از منوی حساب کاربری API Keys → یک Master Key کپی کن
-
-۴. در سایت خودت با ادمین وارد شو، پنل ادمین را باز کن، API Key و Bin ID را وارد کن
-
-۵. دکمه 💾 ذخیره را بزن — پیام «✓ ذخیره و sync شد» نمایش می‌دهد
-
-از این به بعد روی هر دستگاهی که سایت باز شود، اگر API Key در localStorage آن مرورگر ذخیره باشد، تنظیمات از ابر می‌آید. اگر نباشد، مقادیر پیش‌فرض نمایش داده می‌شود — که برای مشتری‌ها مشکلی نیست چون آن‌ها اصلاً به تنظیمات دسترسی ندارند.
-
-
-Lightbox calculator
-Code · HTML 
-میتونی به صورت راست چین با من چت کنی ؟ حرفات بهم میریزه توی این حالت و من سخت میفهمم چی نوشتی
-
-22:08
-متأسفانه نه — من کنترلی روی چیدمان متن در رابط کاربری ندارم. این تنظیم به مرورگر و سیستم عامل شما بستگی دارد.
-
-یک پیشنهاد: در مرورگر کروم یا اج، افزونه‌ای مثل RTL Toggle نصب کنید که جهت صفحه را تغییر می‌دهد. یا در تنظیمات زبان ویندوز/موبایل، فارسی را به عنوان زبان اصلی تنظیم کنید تا رابط‌های متنی راست‌چین شوند.
-
-من اصلا نمیخوام هیچ کاربری تنظیمات پیش فرض رو ببینه و همه باید آخرین تغییرات رو ببین. راهکار چیه ؟
-
-22:10
-راهکار اینه که API Key و Bin ID رو مستقیم توی کد فایل HTML بنویسی — به عنوان مقدار پیش‌فرض. اینطوری هر بار صفحه باز بشه، بدون نیاز به وارد کردن چیزی، تنظیمات از JSONBin می‌خونه.
-
-فقط کافیه این دو خط رو توی فایل پیدا و ویرایش کنی:
-
-html
-<input id="jbKey" type="password" placeholder="$2a$10$...">
-<input id="jbBin" type="text" placeholder="6849abcd...">
-تبدیلشون کن به:
-
-html
-<input id="jbKey" type="password" value="کلید-API-شما-اینجا">
-<input id="jbBin" type="text" value="Bin-ID-شما-اینجا">
-بعد فایل رو دوباره روی GitHub آپلود کن.
-
-نکته امنیتی مهم: چون ریپوی GitHub شما Public هست، این کلید برای هر کسی قابل دیدنه. برای جلوگیری از سوءاستفاده، توی JSONBin داشبورد روی اون Bin برو و گزینه Make Private رو فعال کن — اینطوری فقط با همون API Key می‌شه داده رو خوند و نوشت، ولی کسی نمی‌تونه محتواشو از طریق لینک مستقیم ببینه.
-
-راهی نیست که بدون ثبت نام توی اون سایته این اتفاق بیفته ؟
-
-22:12
-چرا، راه داره. چند گزینه رایگان بدون نیاز به ثبت‌نام:
-
-گزینه ۱ — GitHub خودت (بهترین گزینه)
-
-چون فایل HTML روی GitHub داری، می‌تونی یه فایل prices.json هم کنارش بذاری. ادمین از طریق GitHub API اون فایل رو آپدیت می‌کنه و همه کاربرها همیشه آخرین نسخه رو می‌خونن.
-
-فقط یه Personal Access Token از GitHub می‌خوای که کاملاً رایگانه و نیاز به سایت جدیدی نداری.
-
-گزینه ۲ — Google Sheets
-
-یه شیت گوگل بساز، قیمت‌ها رو توش بنویس، و از طریق Google Sheets API بخونشون. رایگانه ولی نیاز به حساب گوگل داره.
-
-پیشنهاد من گزینه ۱ هست چون GitHub رو از قبل داری. بگو تا فایل رو با این سیستم آپدیت کنم — فقط یه Personal Access Token از GitHub لازم داری که ساختنش ۲ دقیقه طول می‌کشه.
-
-گزینه 1 رو ردیف کن
-
-22:13
-خب، اول Token بساز:
-
-۱. Personal Access Token بساز
-
-GitHub → پروفایل → Settings → Developer settings → Personal access tokens → Tokens (classic)
-دکمه Generate new token (classic)
-یه اسم بده مثلاً lightbox-prices
-تیک repo رو بزن
-Generate token → کپیش کن (یه بار نشون داده میشه)
-۲. فایل prices.json بساز
-
-توی ریپوی GitHub، یه فایل جدید با اسم prices.json بساز با این محتوا:
-
-json
-{
-  "p_prof6": "380000",
-  "p_prof9": "520000",
-  "p_mdf": "950000",
-  "p_pvc": "1300000",
-  "p_led": "85000",
-  "p_print": "180000",
-  "p_labor": "250000",
-  "pw10": "320000",
-  "pw16": "420000",
-  "pw25": "580000",
-  "pw33": "720000",
-  "margin": "35",
-  "wasteTh": "20",
-  "adminPass": "admin123"
-}
-۳. بگو ریپوت چه اسمیه تا فایل HTML رو آپدیت کنم — چون آدرس API باید دقیقاً شامل username/repo-name باشه.
-
-این مسیرهایی که میگی اصلا نیست توی گیت هاب
-
-22:18
-بذار مستقیم راهنماییت کنم با اسکرین‌شات‌های دقیق‌تر.
-
-برای Token:
-
-۱. این لینک رو مستقیم باز کن: https://github.com/settings/tokens ۲. دکمه Generate new token → Generate new token (classic) ۳. توی صفحه‌ای که باز میشه:
-
-Note: هر اسمی مثل lightbox
-Expiration: هر چقدر خواستی یا No expiration
-تیک repo رو بزن (اولین گزینه توی لیست) ۴. پایین صفحه Generate token رو بزن
-برای فایل prices.json:
-
-۱. برو توی ریپوت روی GitHub ۲. دکمه Add file (بالای لیست فایل‌ها) ۳. Create new file ۴. توی باکس اسم فایل بنویس prices.json ۵. محتوای JSON بالا رو کپی کن توش ۶. پایین صفحه Commit changes رو بزن
-
-وقتی این دو کار رو کردی، username و نام ریپوت رو بهم بگو تا فایل HTML رو آپدیت کنم.
-
-Namvar A.png
-لوگو رو با این عوض کن و اسم ریپو هم همینه [Light-Box-Calculator](https://github.com/shahabshamchi/Light-Box-Calculator/tree/main)
-
-22:46
-
-Viewed a file, ran a command
-Viewed a file, ran a command
-حالا سیستم GitHub sync رو اضافه می‌کنم — با shahabshamchi/Light-Box-Calculator هاردکد میشه:
-
-
-Ran 3 commands, read a file
-Ran 3 commands, read a file
-آماده است. حالا این دو فایل رو روی GitHub آپلود کن:
-
-فایل اول — همین lightbox_calculator.html که دانلود کردی جایگزین فایل قبلی در ریپو بشه (یا اسمش رو index.html بذار)
-
-فایل دوم — یه فایل جدید بساز به اسم prices.json با این محتوا:
-
-json
-{
-  "p_prof6": "380000",
-  "p_prof9": "520000",
-  "p_mdf": "950000",
-  "p_pvc": "1300000",
-  "p_led": "85000",
-  "p_print": "180000",
-  "p_labor": "250000",
-  "pw10": "320000",
-  "pw16": "420000",
-  "pw25": "580000",
-  "pw33": "720000",
-  "margin": "35",
-  "wasteTh": "20",
-  "adminPass": "admin123"
-}
-نحوه کار بعد از آپلود:
-
-هر بار صفحه باز بشه، مستقیم از prices.json روی GitHub می‌خونه — بدون نیاز به ورود ادمین، همه کاربرها آخرین قیمت‌ها رو می‌بینن.
-
-وقتی ادمین وارد بشه و قیمت‌ها رو تغییر بده و 💾 ذخیره بزنه، با Personal Access Token فایل prices.json روی GitHub آپدیت میشه و از اون لحظه همه کاربرها قیمت جدید رو می‌بینن.
-
-
-Lightbox calculator
-Code · HTML 
-فایل لوگو رو نیاز نیست دیگه روی گیت هاب بذارم
-
-22:54
-درسته — لوگو مستقیم داخل فایل HTML به صورت base64 embed شده، پس نیازی به فایل جداگانه نیست.
-
-فقط این دو فایل رو روی GitHub آپلود کن:
-
-index.html (همین فایلی که دانلود کردی)
-prices.json (با محتوای بالا)
-همین کافیه.
-
-کادری که لوگو توش قرار داره رو میخوام مشکی کامل کنی که لوگو زمینه لوگو با اون رنگش یکی بشه
-
-23:37
-
-Ran a command, edited a file, read a file
-Ran a command, edited a file, read a file
-هدر کاملاً مشکی شد — زمینه لوگو با پس‌زمینه هدر یکی میشه.
-
-
-Lightbox calculator
-Code · HTML 
-
-
-
-
-
-Claude is AI and can make mistakes. Please double-check responses.
-
-
-raw
-Lightbox calculator · HTML
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -643,7 +95,7 @@ svg.schema{display:block;width:100%;min-width:300px;height:auto}
 </style>
 </head>
 <body>
- 
+
 <div class="site-header">
   <div class="brand">
     <img src="data:image/png;base64,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" alt="Namvar Sign System Group">
@@ -662,7 +114,7 @@ svg.schema{display:block;width:100%;min-width:300px;height:auto}
     ادمین · خروج
   </div>
 </div>
- 
+
 <div class="wrap" id="appWrap">
   <div>
     <div class="card">
@@ -679,7 +131,7 @@ svg.schema{display:block;width:100%;min-width:300px;height:auto}
       <input id="qty" type="number" value="1" min="1">
       <button class="btn" onclick="calc()">محاسبه قیمت</button>
     </div>
- 
+
     <div class="card admin-card admin-section" style="margin-top:14px">
       <h2>⚙ تنظیمات ادمین</h2>
       <div class="mini">
@@ -723,12 +175,12 @@ svg.schema{display:block;width:100%;min-width:300px;height:auto}
       </div>
     </div>
   </div>
- 
+
   <div class="card">
     <div id="out"><div class="empty">ابعاد را وارد کنید و «محاسبه قیمت» را بزنید</div></div>
   </div>
 </div>
- 
+
 <script>
 const SHEET={mdf:{w:244,h:183,price:()=>+g('p_mdf')},pvc:{w:244,h:122,price:()=>+g('p_pvc')}};
 const PROF={p6:{label:'ارتفاع ۶cm',price:()=>+g('p_prof6')},p9:{label:'ارتفاع ۹cm',price:()=>+g('p_prof9')}};
@@ -738,28 +190,28 @@ const ADMIN_USER='admin';
 const LS_KEY='lightbox_v2';
 const FIELDS=['p_prof6','p_prof9','p_mdf','p_pvc','p_led','p_print','p_labor',
   'pw10','pw16','pw25','pw33','margin','wasteTh','adminPass'];
- 
+
 const g=id=>document.getElementById(id).value;
 const el=id=>document.getElementById(id);
 const fmt=n=>Math.round(n).toLocaleString('fa-IR');
 const toFa=n=>n.toLocaleString('fa-IR');
 let isAdmin=false;
- 
+
 function setStatus(msg,c='var(--mut)'){const s=el('saveStatus');if(s){s.textContent=msg;s.style.color=c;}}
 function setSyncDot(st){const d=el('syncDot');if(d)d.className='sync-dot'+(st==='ok'?' ok':st==='busy'?' busy':'');}
- 
+
 function saveLocal(data){try{localStorage.setItem(LS_KEY,JSON.stringify(data));}catch(e){}}
 function loadLocal(){try{const r=localStorage.getItem(LS_KEY);return r?JSON.parse(r):null;}catch(e){return null;}}
 function fieldsToObj(){const d={};FIELDS.forEach(id=>{const e=el(id);if(e)d[id]=e.value;});return d;}
 function objToFields(data){FIELDS.forEach(id=>{const e=el(id);if(e&&data[id]!==undefined)e.value=data[id];});}
- 
+
 // ── GITHUB CONFIG ──
 const GH_USER='shahabshamchi';
 const GH_REPO='Light-Box-Calculator';
 const GH_FILE='prices.json';
 const GH_API='https://api.github.com/repos/'+GH_USER+'/'+GH_REPO+'/contents/'+GH_FILE;
 const GH_RAW='https://raw.githubusercontent.com/'+GH_USER+'/'+GH_REPO+'/main/'+GH_FILE;
- 
+
 async function readFromGitHub(){
   try{
     // raw URL bypasses auth, always latest committed version
@@ -815,7 +267,7 @@ async function initSettings(){
     if(local)objToFields(local);
   }
 }
- 
+
 function doLogin(){
   const u=el('uname').value.trim(),p=el('upass').value,ap=el('adminPass').value;
   if(u===ADMIN_USER&&p===ap){
@@ -837,7 +289,7 @@ function doLogout(){
   el('adminBadge').style.display='none';
   el('uname').value='';el('upass').value='';setSyncDot('');
 }
- 
+
 function profileCalc(W,H){
   const pieces=[W,W,H,H].sort((a,b)=>b-a);const bars=[];
   pieces.forEach(p=>{
@@ -889,7 +341,7 @@ function powerCalc(br){
   }
   return{units:Array(best.n).fill(best.amp),cost:best.cost,label:toFa(best.n)+'× پاور '+best.amp+'A'};
 }
- 
+
 function calc(){
   const W=+g('W'),H=+g('H'),type=g('back'),ptype=g('prof'),qty=+g('qty');
   const margin=+g('margin')/100,wasteTh=+g('wasteTh')/100;
@@ -908,7 +360,7 @@ function calc(){
   const cost=base+sur,unit=cost*(1+margin),total=unit*qty;
   render({W,H,type,ptype,qty,pr,sh,led,pw,cPr,cSh,cLed,cPow,cPrt,cLab,sur,cost,unit,total,warn:warn.trim(),margin});
 }
- 
+
 function render(d){
   const T=d.type==='mdf'?'MDF':'PVC ضدآب';
   const ot=d.led.vertical?'نصب عمودی':'نصب افقی';
@@ -944,7 +396,7 @@ function render(d){
   el('out').innerHTML=cust+adm+'<div class="schem"><div class="schem-scroll">'+sc.svg+'</div>'+sc.info+'</div>';
   if(isAdmin)el('appWrap').classList.add('admin-mode');
 }
- 
+
 function schematic(d){
   const led=d.led;
   if(!led.rows||!led.segs.length)return{svg:'<div class="empty">ابعاد خیلی کوچک</div>',info:''};
@@ -1005,12 +457,8 @@ function schematic(d){
     info:'<div class="schem-info">ماژول SMD: '+toFa(led.totalStrips)+' عدد &nbsp;·&nbsp; کل SMD: '+toFa(led.totalSMD)+' عدد &nbsp;·&nbsp; '+ot+'</div>'
   };
 }
- 
+
 initSettings().then(()=>calc());
 </script>
 </body>
 </html>
- 
-
-
-
