@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>محاسبه قیمت لایت‌باکس فریم‌لس</title>
+<style>
+:root{
+  --bg:#0e1116;--panel:#161b22;--panel2:#1c2230;--line:#2a3240;
+  --ink:#e8edf2;--mut:#8b97a7;--acc:#ffb000;--acc2:#3ea6ff;
+  --ok:#3ad17b;--warn:#ff7a59;--led:#ffd24d;--pwr:#ff5e7a;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse 120% 60% at 80% -10%,#1a2331 0,var(--bg) 55%);
+  color:var(--ink);font-family:"Vazirmatn","Segoe UI",Tahoma,sans-serif;line-height:1.6;
+  min-height:100vh;padding:12px}
+
+/* ── HEADER ── */
+.site-header{max-width:1180px;margin:0 auto 14px;display:flex;align-items:center;
+  justify-content:space-between;gap:10px;flex-wrap:wrap}
+.brand{flex:1;min-width:180px}
+.brand h1{font-size:20px;margin:0 0 2px;text-align:center}
+.brand h1 span{color:var(--acc)}
+.brand p{color:var(--mut);font-size:11px;margin:0;text-align:center}
+/* login bar */
+.login-bar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.login-bar input{background:var(--panel2);border:1px solid var(--line);color:var(--ink);
+  padding:7px 9px;border-radius:8px;font-size:13px;font-family:inherit;outline:none;
+  width:110px;min-width:0}
+.login-bar input:focus{border-color:var(--acc2)}
+.lbtn{background:var(--panel2);border:1px solid var(--acc2);color:var(--acc2);
+  padding:7px 12px;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;
+  white-space:nowrap;transition:.15s}
+.lbtn:hover{background:var(--acc2);color:#0e1116}
+.admin-badge{background:rgba(255,176,0,.12);border:1px solid var(--acc);color:var(--acc);
+  padding:5px 12px;border-radius:20px;font-size:12px;display:none;cursor:pointer;white-space:nowrap}
+
+/* ── LAYOUT ── */
+.wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:300px 1fr;gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.card h2{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--acc2);margin:0 0 12px}
+label{display:block;font-size:12px;color:var(--mut);margin:9px 0 3px}
+input[type=number],select{width:100%;background:var(--panel2);border:1px solid var(--line);
+  color:var(--ink);padding:9px 10px;border-radius:9px;font-size:14px;font-family:inherit;
+  outline:none;-webkit-appearance:none;appearance:none}
+input[type=number]:focus,select:focus{border-color:var(--acc2)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn{width:100%;margin-top:14px;background:linear-gradient(135deg,var(--acc),#ff8c00);
+  color:#1a1205;border:0;padding:13px;border-radius:10px;font-weight:700;font-size:15px;
+  cursor:pointer;font-family:inherit;transition:.15s;touch-action:manipulation}
+.btn:active{filter:brightness(.93)}
+
+/* admin visibility */
+.admin-section{display:none}
+details.admin-section{display:none!important}
+.admin-mode .admin-section{display:block!important}
+details summary{cursor:pointer;font-size:12px;color:var(--mut);list-style:none;padding:8px 0}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"\2699  ";color:var(--acc)}
+.mini label{margin:5px 0 2px;font-size:11px}
+.mini input{padding:6px 8px;font-size:12px}
+
+/* results */
+.price-big{font-size:30px;font-weight:800;color:var(--acc);line-height:1.2}
+.price-big small{font-size:13px;color:var(--mut);font-weight:400}
+.hint{color:var(--mut);font-size:11px;margin-top:4px}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.badge{background:var(--panel2);border:1px solid var(--line);border-radius:20px;
+  padding:4px 10px;font-size:11px;white-space:nowrap}
+.badge b{color:var(--ink)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{text-align:right;padding:6px 4px;border-bottom:1px solid var(--line)}
+th{color:var(--mut);font-weight:500;font-size:10px}
+td.num{font-variant-numeric:tabular-nums}
+tr.subtotal td{color:var(--mut);font-size:11px}
+tr.total td{border-top:2px solid var(--acc);border-bottom:0;font-weight:700;padding-top:9px}
+.total td:last-child{color:var(--acc)}
+.warnbox{background:rgba(255,122,89,.1);border:1px solid var(--warn);color:#ffb6a3;
+  border-radius:9px;padding:8px 11px;font-size:11px;margin-top:10px}
+
+/* schematic */
+.schem{background:#07090e;border:1px solid var(--line);border-radius:var(--radius);
+  padding:12px;margin-top:14px}
+.schem-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+svg.schema{display:block;width:100%;min-width:320px;height:auto}
+.schem-info{text-align:center;color:var(--led);font-size:11px;font-weight:700;
+  margin-top:8px;padding:0 4px;line-height:1.6;word-break:keep-all}
+.empty{color:var(--mut);text-align:center;padding:40px 0;font-size:13px}
+.card.admin-card{border-color:rgba(255,176,0,.25)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:800px){
+  .wrap{grid-template-columns:1fr}
+  body{padding:10px}
+}
+@media(max-width:500px){
+  .site-header{flex-direction:column;align-items:stretch;gap:8px}
+  .brand h1{font-size:18px}
+  .login-bar{justify-content:center}
+  .login-bar input{width:calc(50% - 3px);flex:1}
+  .lbtn{flex:1;text-align:center}
+  .price-big{font-size:26px}
+  .row2{grid-template-columns:1fr 1fr}
+  .badges{gap:5px}
+  .badge{font-size:10px;padding:3px 8px}
+  table{font-size:11px}
+  th,td{padding:5px 3px}
+  .card{padding:12px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<div class="site-header">
+  <div class="brand">
+    <h1>لایت‌باکس <span>فریم‌لس آلومینیومی</span></h1>
+    <p>محاسبه خودکار قیمت · چیدمان LED · نقشه شماتیک</p>
+  </div>
+  <div class="login-bar" id="loginBar">
+    <input type="text" id="uname" placeholder="نام کاربری" autocomplete="off">
+    <input type="password" id="upass" placeholder="رمز عبور">
+    <button class="lbtn" onclick="doLogin()">ورود ادمین</button>
+  </div>
+  <div class="admin-badge" id="adminBadge" onclick="doLogout()">⚙ ادمین · خروج</div>
+</div>
+
+<div class="wrap" id="appWrap">
+  <!-- ══ LEFT: INPUTS ══ -->
+  <div>
+    <!-- customer inputs always visible -->
+    <div class="card">
+      <h2>ورودی سفارش</h2>
+      <div class="row2">
+        <div><label>عرض (cm)</label><input id="W" type="number" value="200" min="30" max="600"></div>
+        <div><label>ارتفاع (cm)</label><input id="H" type="number" value="150" min="30" max="300"></div>
+      </div>
+      <label>نوع پروفیل</label>
+      <select id="prof">
+        <option value="p6">ارتفاع ۶ سانت</option>
+        <option value="p9">ارتفاع ۹ سانت</option>
+      </select>
+      <label>جنس زیرکار</label>
+      <select id="back">
+        <option value="mdf">MDF (معمولی)</option>
+        <option value="pvc">PVC (ضدآب)</option>
+      </select>
+      <label>تعداد (عدد)</label>
+      <input id="qty" type="number" value="1" min="1">
+      <button class="btn" onclick="calc()">محاسبه قیمت</button>
+    </div>
+
+    <!-- ADMIN ONLY: raw material prices -->
+    <div class="card admin-card admin-section" style="margin-top:14px" id="adminPanel">
+      <h2>⚙ تنظیمات ادمین</h2>
+      <div class="mini">
+        <div class="row2">
+          <div><label>پروفیل ۶cm (تومان/شاخه)</label><input id="p_prof6" type="number" value="380000"></div>
+          <div><label>پروفیل ۹cm (تومان/شاخه)</label><input id="p_prof9" type="number" value="520000"></div>
+        </div>
+        <div class="row2">
+          <div><label>ورق MDF (تومان/برگ)</label><input id="p_mdf" type="number" value="950000"></div>
+          <div><label>ورق PVC (تومان/برگ)</label><input id="p_pvc" type="number" value="1300000"></div>
+        </div>
+        <div class="row2">
+          <div><label>نوار SMD (تومان/شاخه)</label><input id="p_led" type="number" value="85000"></div>
+          <div><label>چاپ تکستایل (تومان/m²)</label><input id="p_print" type="number" value="180000"></div>
+        </div>
+        <div class="row2">
+          <div><label>دستمزد ساخت (تومان/m²)</label><input id="p_labor" type="number" value="250000"></div>
+          <div><label>پاور ۱۰A</label><input id="pw10" type="number" value="320000"></div>
+        </div>
+        <div class="row2">
+          <div><label>پاور ۱۶A</label><input id="pw16" type="number" value="420000"></div>
+          <div><label>پاور ۲۵A</label><input id="pw25" type="number" value="580000"></div>
+        </div>
+        <div class="row2">
+          <div><label>پاور ۳۳A</label><input id="pw33" type="number" value="720000"></div>
+          <div><label>سود (٪)</label><input id="margin" type="number" value="35"></div>
+        </div>
+        <div class="row2">
+          <div><label>آستانه پرت (٪)</label><input id="wasteTh" type="number" value="20"></div>
+          <div><label>رمز ادمین</label><input id="adminPass" type="password" value="admin123"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ RIGHT: RESULTS ══ -->
+  <div class="card">
+    <div id="out"><div class="empty">ابعاد را وارد کنید و «محاسبه قیمت» را بزنید</div></div>
+  </div>
+</div>
+
+<script>
+// ── CONSTANTS ──
+const SHEET={mdf:{w:244,h:183,price:()=>+g('p_mdf')},pvc:{w:244,h:122,price:()=>+g('p_pvc')}};
+const PROF={p6:{label:'ارتفاع ۶cm',price:()=>+g('p_prof6')},p9:{label:'ارتفاع ۹cm',price:()=>+g('p_prof9')}};
+const PLEN=600,PMIN=40;
+const LED_LEN=950,   // mm (raw strip = 950mm)
+      LED_MARGIN=60, // mm margin from edge (6cm)
+      LED_GAP_H=70,  // mm gap between segments horizontally
+      LED_GAP_V=130, // mm spacing between rows (across)
+      LED_CUT=79.16, // mm per cut unit (exact)
+      LED_W=15;      // mm strip width
+const SMD_PER_STRIP=12; // SMD chips per full 950mm strip
+const ADMIN_USER='admin';
+
+// ── HELPERS ──
+const g=id=>document.getElementById(id).value;
+const fmt=n=>Math.round(n).toLocaleString('fa-IR');
+const toFa=n=>n.toLocaleString('fa-IR');
+let isAdmin=false;
+
+// ── AUTH ──
+function doLogin(){
+  const u=document.getElementById('uname').value.trim();
+  const p=document.getElementById('upass').value;
+  const ap=document.getElementById('adminPass').value;
+  // We check pass against the field (admin sets it); username fixed
+  if(u===ADMIN_USER && p===ap){
+    isAdmin=true;
+    document.getElementById('appWrap').classList.add('admin-mode');
+    document.getElementById('loginBar').style.display='none';
+    document.getElementById('adminBadge').style.display='flex';
+    alert('ورود موفق. پنل ادمین فعال شد.');
+  } else {
+    alert('نام کاربری یا رمز اشتباه است.');
+  }
+}
+function doLogout(){
+  if(!confirm('از پنل ادمین خارج شوید؟')) return;
+  isAdmin=false;
+  document.getElementById('appWrap').classList.remove('admin-mode');
+  document.getElementById('loginBar').style.display='flex';
+  document.getElementById('adminBadge').style.display='none';
+  document.getElementById('uname').value='';
+  document.getElementById('upass').value='';
+}
+
+// ── PROFILE WASTE (1D bin-pack) ──
+function profileCalc(W,H,ptype){
+  // W,H in cm
+  const pieces=[W,W,H,H].sort((a,b)=>b-a);
+  const bars=[];
+  pieces.forEach(p=>{
+    let placed=false;
+    for(const b of bars){if(b.rem>=p){b.rem-=p;b.cuts.push(p);placed=true;break;}}
+    if(!placed) bars.push({rem:PLEN-p,cuts:[p]});
+  });
+  let dead=0,reuse=0;
+  bars.forEach(b=>{b.rem<PMIN?dead+=b.rem:reuse+=b.rem;});
+  const used=pieces.reduce((a,b)=>a+b,0);
+  return{bars:bars.length,used,dead,reuse,charged:used+dead,ptype};
+}
+
+// ── SHEET WASTE (2D) ──
+function sheetCalc(W,H,type){
+  // W,H in cm
+  const s=SHEET[type],A=s.w,B=s.h;
+  const need=(pw,ph,sw,sh)=>Math.ceil(pw/sw)*Math.ceil(ph/sh);
+  const o1=need(W,H,A,B),o2=need(W,H,B,A);
+  const sheets=Math.min(o1,o2);
+  const orient=o1<=o2?[A,B]:[B,A];
+  const sa=A*B,ua=W*H,ta=sheets*sa,wa=ta-ua;
+  const rW=orient[0]*Math.ceil(W/orient[0])-W;
+  const rH=orient[1]*Math.ceil(H/orient[1])-H;
+  return{sheets,sheetArea:sa,usedArea:ua,totalArea:ta,wasteArea:wa,
+    wastePct:wa/ta*100,useful:(rW>=30||rH>=30)};
+}
+
+// ── LED LAYOUT (mm internally, all measurements precise) ──
+// Returns strips with exact positions in mm, then we convert to px for SVG
+function ledLayout(Wcm,Hcm){
+  const W=Wcm*10, H=Hcm*10; // convert to mm
+  const vertical=H>W;
+  const along=vertical?H:W, across=vertical?W:H;
+  // rows
+  const usableAcross=across-2*LED_MARGIN;
+  if(usableAcross<0) return{rows:0,segs:[],strips:0,rawConsumed:0,vertical,W,H};
+  const rows=Math.floor(usableAcross/LED_GAP_V)+1;
+  const spanAcross=(rows-1)*LED_GAP_V;
+  const marginAcross=(across-spanAcross)/2;
+  // segments along (cut at multiples of 79.16mm)
+  const usableAlong=along-2*LED_MARGIN;
+  let rem=usableAlong; const segs=[];
+  while(rem>0){
+    if(rem>=LED_LEN){segs.push(LED_LEN);rem-=LED_LEN;if(rem>0)rem-=LED_GAP_H;}
+    else{
+      const n=Math.floor(rem/LED_CUT);
+      if(n<1) break;
+      segs.push(n*LED_CUT); rem=0;
+    }
+  }
+  const spanAlong=segs.reduce((a,b)=>a+b,0)+(segs.length-1)*LED_GAP_H;
+  const marginAlong=(along-spanAlong)/2;
+  const totalStrips=rows*segs.length;
+  // raw strips consumed: each segment uses ceil(seg/950) full strips
+  const rawConsumed=rows*segs.reduce((a,b)=>a+Math.ceil(b/LED_LEN),0);
+  // total SMD chips: each cut-unit (79.16mm) contains 1 SMD; count units per segment
+  const totalSMD=rows*segs.reduce((a,b)=>a+Math.round(b/LED_CUT),0);
+  return{rows,segs,stripsPerRow:segs.length,totalStrips,rawConsumed,totalSMD,
+    vertical,W,H,along,across,marginAcross,marginAlong,spanAcross,spanAlong};
+}
+
+// ── POWER SELECTION ──
+function powerCalc(br){
+  const T=[[5,10,'pw10'],[10,16,'pw16'],[15,25,'pw25'],[20,33,'pw33']];
+  const one=b=>{for(const[mx,a,id]of T)if(b<=mx)return{amp:a,id};return null;};
+  if(br<=0) return{units:[],cost:0,label:'—'};
+  if(br<=20){const u=one(br);return{units:[u.amp],cost:+g(u.id),label:`۱× پاور ${u.amp}A`};}
+  let best=null;
+  for(const[cap,id,amp]of[[20,'pw33',33],[15,'pw25',25]]){
+    const n=Math.ceil(br/cap),cost=n*+g(id);
+    if(!best||cost<best.cost) best={n,cost,amp};
+  }
+  return{units:Array(best.n).fill(best.amp),cost:best.cost,label:`${toFa(best.n)}× پاور ${best.amp}A`};
+}
+
+// ── MASTER CALC ──
+function calc(){
+  const W=+g('W'),H=+g('H'),type=g('back'),ptype=g('prof'),qty=+g('qty');
+  const margin=+g('margin')/100,wasteTh=+g('wasteTh')/100;
+  if(W<30||H<30||W>600||H>300){alert('ابعاد خارج از محدوده مجاز است');return;}
+  const pr=profileCalc(W,H,ptype);
+  const sh=sheetCalc(W,H,type);
+  const led=ledLayout(W,H);
+  const pw=powerCalc(led.rawConsumed);
+  const cPr=(pr.charged/PLEN)*PROF[ptype].price();
+  const cSh=sh.sheets*SHEET[type].price();
+  const cLed=led.rawConsumed*+g('p_led');
+  const cPow=pw.cost;
+  const cPrt=(W*H/10000)*+g('p_print');
+  const cLab=(W*H/10000)*+g('p_labor');
+  const base=cPr+cSh+cLed+cPow+cPrt+cLab;
+  let sur=0,warn='';
+  if(sh.wastePct/100>wasteTh&&!sh.useful){
+    sur+=(sh.wasteArea/sh.totalArea)*cSh*0.5;
+    warn+=`پرت ورق ${Math.round(sh.wastePct)}٪ · `;
+  }
+  if(pr.dead>PMIN){
+    sur+=(pr.dead/PLEN)*PROF[ptype].price();
+    warn+=`پرت پروفیل ${pr.dead}cm`;
+  }
+  const cost=base+sur,unit=cost*(1+margin),total=unit*qty;
+  render({W,H,type,ptype,qty,pr,sh,led,pw,cPr,cSh,cLed,cPow,cPrt,cLab,
+    base,sur,cost,unit,total,warn:warn?warn.replace(/·\s*$/,'').trim():'',margin});
+}
+
+// ── RENDER ──
+function render(d){
+  const T=d.type==='mdf'?'MDF':'PVC ضدآب';
+  const orientTxt=d.led.vertical?'نصب عمودی':'نصب افقی';
+
+  // CUSTOMER VIEW: just final price + SMD/power info
+  let customerBlock=`
+    <div style="margin-bottom:16px">
+      <div class="price-big">${fmt(d.total)} <small>تومان</small></div>
+      <div class="hint">${d.qty>1?`قیمت واحد ${fmt(d.unit)} × ${toFa(d.qty)} عدد`:''}</div>
+    </div>
+    <div class="badges">
+      <span class="badge">ابعاد: <b>${toFa(d.W)}×${toFa(d.H)} cm</b></span>
+      <span class="badge">${orientTxt}</span>
+      <span class="badge">ماژول SMD: <b>${toFa(d.led.totalStrips)}</b> عدد</span>
+      <span class="badge">تعداد کل SMD: <b>${toFa(d.led.totalSMD)}</b> عدد</span>
+      <span class="badge">${d.pw.label}</span>
+      <span class="badge">پرت ورق: <b>${Math.round(d.sh.wastePct)}٪</b></span>
+    </div>
+    ${d.warn?`<div class="warnbox">⚠ ${d.warn}</div>`:''}
+  `;
+
+  // ADMIN VIEW: full cost breakdown table
+  let adminRows=[
+    ['پروفیل '+PROF[d.ptype].label,`${(d.pr.charged/PLEN).toFixed(2)} شاخه`,d.cPr],
+    ['زیرکار '+T,`${toFa(d.sh.sheets)} برگ`,d.cSh],
+    ['نوار SMD',`${toFa(d.led.rawConsumed)} شاخه`,d.cLed],
+    ['منبع تغذیه',d.pw.label,d.cPow],
+    ['چاپ تکستایل',`${(d.W*d.H/10000).toFixed(2)} m²`,d.cPrt],
+    ['دستمزد',`${(d.W*d.H/10000).toFixed(2)} m²`,d.cLab],
+  ];
+  if(d.sur>0) adminRows.push(['افزایش پرت','—',d.sur]);
+
+  let adminBlock=`
+    <div class="admin-section" style="margin-top:14px;border-top:1px solid var(--line);padding-top:12px">
+      <div style="font-size:11px;color:var(--mut);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">ریز قیمت مواد (ادمین)</div>
+      <table>
+        <tr><th>ردیف</th><th>مشخصات</th><th>مبلغ (تومان)</th></tr>
+        ${adminRows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td class="num">${fmt(r[2])}</td></tr>`).join('')}
+        <tr class="subtotal"><td colspan="2">قیمت تمام‌شده (بدون سود)</td><td class="num">${fmt(d.cost)}</td></tr>
+        <tr class="total"><td colspan="2">قیمت فروش (${toFa(d.margin*100)}٪ سود)</td><td class="num">${fmt(d.unit)}</td></tr>
+      </table>
+    </div>
+  `;
+
+  const sc=schematic(d);
+  let html=customerBlock+adminBlock+`<div class="schem"><div class="schem-scroll">${sc.svg}</div>${sc.info}</div>`;
+  document.getElementById('out').innerHTML=html;
+
+  // re-apply admin mode styling to newly rendered elements
+  if(isAdmin) document.getElementById('appWrap').classList.add('admin-mode');
+}
+
+// ── SVG SCHEMATIC ──
+// SMD module: strip 950mm × 15mm, 12 SMD chips spaced 79.16mm,
+// cut lines (red) every 79.16mm. First SMD at 39.62mm from strip start.
+function schematic(d){
+  const led=d.led;
+  if(led.rows===0||led.segs.length===0) return {svg:'<div class="empty">ابعاد خیلی کوچک</div>',info:''};
+
+  // canvas size in mm, scale to pixels
+  const Wmm=d.W*10, Hmm=d.H*10;
+  const PAD=45; // px padding for dim lines
+  const maxW=620, maxH=360;
+  const sc=Math.min(maxW/Wmm, maxH/Hmm);
+  const cw=Wmm*sc, ch=Hmm*sc;
+
+  // SMD geometry (all in mm)
+  const LED_CHIP_R=3.16; // radius 3.16mm (from SVG: 631.36 units / 100 = 6.31mm diameter)
+  const SMD_SPACING=79.16; // mm between SMD centers
+  const SMD_FIRST=39.62;   // mm from strip start to first SMD center
+  const LED_STRIP_H=15;    // mm
+
+  let strips_svg='';
+
+  for(let r=0;r<led.rows;r++){
+    const acrossPosMm=led.marginAcross + r*LED_GAP_V;
+    let alongStartMm=led.marginAlong;
+
+    for(let si=0;si<led.segs.length;si++){
+      const segMm=led.segs[si];
+      const nCuts=Math.round(segMm/LED_CUT); // how many LED_CUT units in this segment
+
+      // strip body
+      let sx,sy,sw,sh_px;
+      if(!led.vertical){
+        sx=(alongStartMm*sc+PAD); sy=((acrossPosMm-LED_STRIP_H/2)*sc+PAD);
+        sw=segMm*sc; sh_px=LED_STRIP_H*sc;
+      } else {
+        sx=((acrossPosMm-LED_STRIP_H/2)*sc+PAD); sy=(alongStartMm*sc+PAD);
+        sw=LED_STRIP_H*sc; sh_px=segMm*sc;
+      }
+      strips_svg+=`<rect x="${sx.toFixed(1)}" y="${sy.toFixed(1)}" width="${sw.toFixed(1)}" height="${sh_px.toFixed(1)}" fill="#2d2d2d" stroke="#555" stroke-width="0.8"/>`;
+
+      // SMD chips (yellow circles)
+      const nChips=nCuts;
+      for(let ci=0;ci<nChips;ci++){
+        const chipOffset=SMD_FIRST + ci*SMD_SPACING;
+        if(chipOffset>segMm) break;
+        let cx,cy;
+        if(!led.vertical){
+          cx=(alongStartMm+chipOffset)*sc+PAD;
+          cy=acrossPosMm*sc+PAD;
+        } else {
+          cx=acrossPosMm*sc+PAD;
+          cy=(alongStartMm+chipOffset)*sc+PAD;
+        }
+        strips_svg+=`<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${(LED_CHIP_R*sc).toFixed(1)}" fill="var(--led)" stroke="#aaa" stroke-width="0.5" opacity="0.9"/>`;
+      }
+
+      // Cut lines (red) between SMD chips, every 79.16mm
+      for(let ci=1;ci<nCuts;ci++){
+        const cutOffset=ci*LED_CUT;
+        if(cutOffset>=segMm) break;
+        let lx1,ly1,lx2,ly2;
+        const halfH=(LED_STRIP_H/2+1)*sc;
+        if(!led.vertical){
+          const cx=(alongStartMm+cutOffset)*sc+PAD;
+          const midY=acrossPosMm*sc+PAD;
+          lx1=cx; ly1=midY-halfH; lx2=cx; ly2=midY+halfH;
+        } else {
+          const cy=(alongStartMm+cutOffset)*sc+PAD;
+          const midX=acrossPosMm*sc+PAD;
+          lx1=midX-halfH; ly1=cy; lx2=midX+halfH; ly2=cy;
+        }
+        strips_svg+=`<line x1="${lx1.toFixed(1)}" y1="${ly1.toFixed(1)}" x2="${lx2.toFixed(1)}" y2="${ly2.toFixed(1)}" stroke="#ff3a3a" stroke-width="1.2"/>`;
+      }
+
+      alongStartMm+=segMm+LED_GAP_H;
+    }
+  }
+
+  // POWER boxes (right side)
+  let pwr_svg='';
+  const units=d.pw.units;
+  const pwH=22,pwG=7,pwW=62;
+  const totalPwH=units.length*pwH+(units.length-1)*pwG;
+  let pwY=PAD+(ch-totalPwH)/2;
+  const pwX=PAD+cw+14;
+  units.forEach((amp,i)=>{
+    const y=pwY+i*(pwH+pwG);
+    const cy=y+pwH/2;
+    pwr_svg+=`<rect x="${pwX}" y="${y.toFixed(1)}" width="${pwW}" height="${pwH}" rx="4" fill="#1e0e14" stroke="var(--pwr)" stroke-width="1.5"/>`;
+    pwr_svg+=`<text x="${(pwX+pwW/2).toFixed(1)}" y="${(cy+4.5).toFixed(1)}" fill="var(--pwr)" font-size="10" text-anchor="middle">پاور ${amp}A</text>`;
+    pwr_svg+=`<line x1="${(PAD+cw).toFixed(1)}" y1="${cy.toFixed(1)}" x2="${pwX.toFixed(1)}" y2="${cy.toFixed(1)}" stroke="var(--pwr)" stroke-width="0.8" stroke-dasharray="3 2"/>`;
+  });
+
+  // Dimension lines
+  const dim=`
+    <line x1="${PAD}" y1="${PAD-18}" x2="${PAD+cw}" y2="${PAD-18}" stroke="var(--mut)" stroke-width="0.8"/>
+    <line x1="${PAD}" y1="${PAD-22}" x2="${PAD}" y2="${PAD-14}" stroke="var(--mut)" stroke-width="0.8"/>
+    <line x1="${PAD+cw}" y1="${PAD-22}" x2="${PAD+cw}" y2="${PAD-14}" stroke="var(--mut)" stroke-width="0.8"/>
+    <text x="${(PAD+cw/2).toFixed(1)}" y="${PAD-24}" fill="var(--ink)" font-size="11" text-anchor="middle">${d.W} cm</text>
+    <line x1="${PAD-18}" y1="${PAD}" x2="${PAD-18}" y2="${PAD+ch}" stroke="var(--mut)" stroke-width="0.8"/>
+    <line x1="${PAD-22}" y1="${PAD}" x2="${PAD-14}" y2="${PAD}" stroke="var(--mut)" stroke-width="0.8"/>
+    <line x1="${PAD-22}" y1="${PAD+ch}" x2="${PAD-14}" y2="${PAD+ch}" stroke="var(--mut)" stroke-width="0.8"/>
+    <text x="${PAD-26}" y="${(PAD+ch/2).toFixed(1)}" fill="var(--ink)" font-size="11" text-anchor="middle" transform="rotate(-90 ${PAD-26} ${(PAD+ch/2).toFixed(1)})">${d.H} cm</text>
+  `;
+
+  const orientTxt=led.vertical?'نصب عمودی':'نصب افقی';
+  // info text goes in HTML (not SVG) to avoid overflow issues
+  const infoHtml=`<div class="schem-info">ماژول SMD: ${toFa(led.totalStrips)} عدد &nbsp;·&nbsp; تعداد کل SMD: ${toFa(led.totalSMD)} عدد &nbsp;·&nbsp; ${orientTxt}</div>`;
+
+  const SVG_W=cw+PAD*2+80;
+  const SVG_H=ch+PAD*2+6; // tight — no bottom text in SVG
+
+  return {
+    svg:`<svg class="schema" viewBox="0 0 ${SVG_W.toFixed(0)} ${SVG_H.toFixed(0)}" xmlns="http://www.w3.org/2000/svg">
+    <rect x="${PAD}" y="${PAD}" width="${cw.toFixed(1)}" height="${ch.toFixed(1)}" fill="#0b0f17" stroke="var(--acc2)" stroke-width="1.5"/>
+    <rect x="${PAD+4}" y="${PAD+4}" width="${(cw-8).toFixed(1)}" height="${(ch-8).toFixed(1)}" fill="none" stroke="#1a2535" stroke-width="0.8" stroke-dasharray="4 3"/>
+    ${strips_svg}${pwr_svg}${dim}
+  </svg>`,
+    info:infoHtml
+  };
+}
+
+// auto-calc on load
+calc();
+</script>
+</body>
+</html>
